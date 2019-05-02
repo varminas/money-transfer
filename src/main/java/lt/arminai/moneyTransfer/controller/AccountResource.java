@@ -22,11 +22,11 @@ public class AccountResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAccount() {
         // TODO get from SecurityContext
-        String accountId = "1";
+        int accountId = 1;
 
         return accountService.getAccount(accountId)
                 .map(AccountConverter::toDto)
                 .map(dto -> Response.ok(dto).build())
-                .orElseGet(() -> Response.noContent().build());
+                .orElseGet(() -> Response.status(Response.Status.NOT_FOUND).build());
     }
 }

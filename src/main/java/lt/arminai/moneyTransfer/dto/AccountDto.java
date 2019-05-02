@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class AccountDto {
-    private String id;
+    private int id;
     private String number;
     private long balance;
 }
