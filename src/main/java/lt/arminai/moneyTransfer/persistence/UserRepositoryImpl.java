@@ -1,6 +1,6 @@
 package lt.arminai.moneyTransfer.persistence;
 
-import lt.arminai.moneyTransfer.model.Account;
+import lt.arminai.moneyTransfer.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,16 +10,16 @@ import javax.persistence.PersistenceContext;
 import java.util.Optional;
 
 @ApplicationScoped
-public class AccountRepositoryImpl implements AccountRepository {
-    private static final Logger logger = LoggerFactory.getLogger(AccountRepositoryImpl.class);
+public class UserRepositoryImpl implements UserRepository {
+    private static final Logger logger = LoggerFactory.getLogger(UserRepositoryImpl.class);
 
     @PersistenceContext(name = "jpa-unit")
     private EntityManager em;
 
     @Override
-    public Optional<Account> getById(int accountId) {
-        Account account = em.find(Account.class, accountId);
+    public Optional<User> getById(int userId) {
+        User user = em.find(User.class, userId);
 
-        return Optional.ofNullable(account);
+        return Optional.ofNullable(user);
     }
 }

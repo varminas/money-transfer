@@ -8,11 +8,10 @@ import java.time.LocalDateTime;
 
 @Data
 @Builder
-public class AccountDto {
+public class TransactionDto {
     private int id;
-    private String number;
-    private BigDecimal balance;
-    private CurrencyDto currency;
+    private int fromAccountId;
+    private int toAccountId;
+    private BigDecimal amount;
     private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 }

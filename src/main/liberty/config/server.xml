@@ -22,8 +22,8 @@
     </library>
 
     <!-- Datasource Configuration -->
-    <dataSource id="h2test" jndiName="jdbc/h2test">
+    <dataSource id="h2banking" jndiName="jdbc/h2banking">
         <jdbcDriver libraryRef="H2JDBCLib"/>
-        <properties URL="jdbc:h2:mem:testdb"/>
+        <properties URL="jdbc:h2:mem:banking;INIT=RUNSCRIPT FROM 'classpath:create.sql'\;RUNSCRIPT FROM 'classpath:init.sql'"/>
     </dataSource>
 </server>

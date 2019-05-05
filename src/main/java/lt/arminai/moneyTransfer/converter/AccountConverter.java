@@ -9,7 +9,14 @@ public final class AccountConverter {
             return null;
         }
 
-        return new Account(dto.getId(), dto.getNumber(), dto.getBalance());
+        return Account.builder()
+                .id(dto.getId())
+                .number(dto.getNumber())
+                .balance(dto.getBalance())
+                .currency(CurrencyConverter.fromDto(dto.getCurrency()))
+                .createdAt(dto.getCreatedAt())
+                .updatedAt(dto.getUpdatedAt())
+                .build();
     }
 
     public static AccountDto toDto(Account account) {
@@ -17,6 +24,13 @@ public final class AccountConverter {
             return null;
         }
 
-        return new AccountDto(account.getId(), account.getNumber(), account.getBalance());
+        return AccountDto.builder()
+                .id(account.getId())
+                .number(account.getNumber())
+                .balance(account.getBalance())
+                .currency(CurrencyConverter.toDto(account.getCurrency()))
+                .createdAt(account.getCreatedAt())
+                .updatedAt(account.getUpdatedAt())
+                .build();
     }
 }
