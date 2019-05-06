@@ -18,22 +18,32 @@ public class User extends BasePersistentEntity {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "first_name")
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Column(name = "last_name")
+    @Column(name = "last_name", nullable = false)
     private String lastName;
+
+    @Column(name = "gender", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
+    @Column(name = "phone", nullable = false)
+    private String phone;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "user_id")
     private List<Account> accounts;
 
     @Builder
-    public User(LocalDateTime createdAt, LocalDateTime updatedAt, int id, String firstName, String lastName, List<Account> accounts) {
+    public User(LocalDateTime createdAt, LocalDateTime updatedAt, int id, String firstName, String lastName,
+                Gender gender, String phone, List<Account> accounts) {
         super(createdAt, updatedAt);
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.gender = gender;
+        this.phone = phone;
         this.accounts = accounts;
     }
 }

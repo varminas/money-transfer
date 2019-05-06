@@ -2,6 +2,8 @@ CREATE TABLE User(
     id INT PRIMARY KEY,
     first_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
+    phone VARCHAR(50) NOT NULL,
+    gender VARCHAR(2) NOT NULL,
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL
 );

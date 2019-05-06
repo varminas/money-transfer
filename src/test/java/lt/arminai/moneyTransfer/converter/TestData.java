@@ -2,9 +2,11 @@ package lt.arminai.moneyTransfer.converter;
 
 import lt.arminai.moneyTransfer.dto.AccountDto;
 import lt.arminai.moneyTransfer.dto.CurrencyDto;
+import lt.arminai.moneyTransfer.dto.GenderDto;
 import lt.arminai.moneyTransfer.dto.UserDto;
 import lt.arminai.moneyTransfer.model.Account;
 import lt.arminai.moneyTransfer.model.Currency;
+import lt.arminai.moneyTransfer.model.Gender;
 import lt.arminai.moneyTransfer.model.User;
 
 import java.math.BigDecimal;
@@ -40,6 +42,8 @@ public final class TestData {
                 .firstName("Fname")
                 .lastName("Lname")
                 .accounts(accounts)
+                .phone("+37060012345")
+                .gender(Gender.M)
                 .createdAt(LocalDateTime.of(2019, 2, 2, 3, 4, 5))
                 .updatedAt(LocalDateTime.of(2019, 2, 2, 3, 4, 5))
                 .build();
@@ -50,6 +54,8 @@ public final class TestData {
                 .id(1)
                 .firstName("Fname")
                 .lastName("Lname")
+                .phone("+37060012345")
+                .gender(GenderDto.M)
                 .accounts(accounts)
                 .createdAt(LocalDateTime.of(2019, 2, 2, 3, 4, 5))
                 .updatedAt(LocalDateTime.of(2019, 2, 2, 3, 4, 5))
