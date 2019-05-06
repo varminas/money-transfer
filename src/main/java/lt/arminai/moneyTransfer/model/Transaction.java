@@ -5,6 +5,9 @@ import lombok.*;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
+
+import static org.eclipse.persistence.internal.helper.StringHelper.isBlank;
 
 @Entity
 @Table(name = "Transaction")
@@ -15,20 +18,27 @@ import java.time.LocalDateTime;
 @ToString
 @EqualsAndHashCode
 public class Transaction {
-    @GeneratedValue(strategy = GenerationType.AUTO)
+
     @Id
     @Column(name = "id")
-    private Long id;
+    private String id;
 
-    @Column(name = "from_account_id")
+    @Column(name = "from_account_id", nullable = false)
     private int fromAccountId;
 
-    @Column(name = "to_account_id")
+    @Column(name = "to_account_id", nullable = false)
     private int toAccountId;
 
-    @Column(name = "amount")
+    @Column(name = "amount", nullable = false)
     private BigDecimal amount;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
+
+    @PrePersist
+    public void generateId() {
+        if (isBlank(this.id)) {
+            this.id = UUID.randomUUID().toString();
+        }
+    }
 }

@@ -21,7 +21,7 @@ CREATE TABLE Account(
 );
 
 CREATE TABLE Transaction(
-    id BIGINT PRIMARY KEY,
+    id VARCHAR(36) PRIMARY KEY,
     from_account_id INT(11) NOT NULL,
     to_account_id INT(11) NOT NULL,
     amount DECIMAL NOT NULL,
