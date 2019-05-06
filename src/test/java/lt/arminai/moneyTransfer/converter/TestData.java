@@ -16,7 +16,7 @@ import java.util.List;
 public final class TestData {
     public static Account getAccount() {
         return Account.builder()
-                .id(1)
+                .id(1L)
                 .number("123")
                 .balance(BigDecimal.TEN)
                 .currency(Currency.EUR)
@@ -27,7 +27,7 @@ public final class TestData {
 
     public static AccountDto getAccountDto() {
         return AccountDto.builder()
-                .id(1)
+                .id(1L)
                 .number("123")
                 .balance(BigDecimal.TEN)
                 .currency(CurrencyDto.EUR)
@@ -38,7 +38,7 @@ public final class TestData {
 
     public static User getUser(List<Account> accounts) {
         return User.builder()
-                .id(1)
+                .id(1L)
                 .firstName("Fname")
                 .lastName("Lname")
                 .accounts(accounts)
@@ -51,7 +51,7 @@ public final class TestData {
 
     public static UserDto getUserDto(List<AccountDto> accounts) {
         return UserDto.builder()
-                .id(1)
+                .id(1L)
                 .firstName("Fname")
                 .lastName("Lname")
                 .phone("+37060012345")

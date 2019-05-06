@@ -17,7 +17,7 @@ public class UserRepositoryImpl implements UserRepository {
     private EntityManager em;
 
     @Override
-    public Optional<User> getById(int userId) {
+    public Optional<User> getById(long userId) {
         User user = em.find(User.class, userId);
 
         return Optional.ofNullable(user);

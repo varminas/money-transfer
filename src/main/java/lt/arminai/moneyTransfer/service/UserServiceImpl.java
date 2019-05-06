@@ -16,7 +16,7 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
-    public Optional<User> getUser(int userId) {
+    public Optional<User> getUser(long userId) {
         return userRepository.getById(userId);
     }
 }

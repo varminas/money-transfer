@@ -5,5 +5,5 @@ import lt.arminai.moneyTransfer.model.Account;
 import java.util.Optional;
 
 public interface AccountRepository {
-    Optional<Account> getById(int accountId);
+    Optional<Account> getById(long accountId);
 }

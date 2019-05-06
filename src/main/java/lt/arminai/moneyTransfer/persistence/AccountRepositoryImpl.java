@@ -17,7 +17,7 @@ public class AccountRepositoryImpl implements AccountRepository {
     private EntityManager em;
 
     @Override
-    public Optional<Account> getById(int accountId) {
+    public Optional<Account> getById(long accountId) {
         Account account = em.find(Account.class, accountId);
 
         return Optional.ofNullable(account);

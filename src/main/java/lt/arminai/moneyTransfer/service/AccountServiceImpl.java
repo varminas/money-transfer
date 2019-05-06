@@ -16,7 +16,7 @@ public class AccountServiceImpl implements AccountService {
     private AccountRepository accountRepository;
 
     @Override
-    public Optional<Account> getAccount(int accountId) {
+    public Optional<Account> getAccount(long accountId) {
         return accountRepository.getById(accountId);
     }
 }

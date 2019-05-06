@@ -7,5 +7,5 @@ import java.util.Optional;
 
 @Local
 public interface AccountService {
-    Optional<Account> getAccount(int accountId);
+    Optional<Account> getAccount(long accountId);
 }

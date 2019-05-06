@@ -17,7 +17,7 @@ public class Account extends BasePersistentEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     @Column(name = "id")
-    private int id;
+    private Long id;
 
     @Column(name = "number", nullable = false)
     private String number;
@@ -30,7 +30,7 @@ public class Account extends BasePersistentEntity {
     private Currency currency;
 
     @Builder
-    public Account(LocalDateTime createdAt, LocalDateTime updatedAt, int id, String number, BigDecimal balance, Currency currency) {
+    public Account(LocalDateTime createdAt, LocalDateTime updatedAt, Long id, String number, BigDecimal balance, Currency currency) {
         super(createdAt, updatedAt);
         this.id = id;
         this.number = number;

@@ -3,6 +3,8 @@ package lt.arminai.moneyTransfer.converter;
 import lt.arminai.moneyTransfer.dto.TransactionDto;
 import lt.arminai.moneyTransfer.model.Transaction;
 
+import java.time.LocalDateTime;
+
 public final class TransactionConverter {
     public static Transaction fromDto(TransactionDto dto) {
         if (dto == null) {
@@ -14,7 +16,7 @@ public final class TransactionConverter {
                 .fromAccountId(dto.getFromAccountId())
                 .toAccountId(dto.getToAccountId())
                 .amount(dto.getAmount())
-                .createdAt(dto.getCreatedAt())
+                .createdAt(dto.getCreatedAt() != null ? dto.getCreatedAt() : LocalDateTime.now())
                 .build();
     }
 

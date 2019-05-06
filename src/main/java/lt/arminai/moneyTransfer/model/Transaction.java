@@ -18,7 +18,7 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     @Column(name = "id")
-    private int id;
+    private Long id;
 
     @Column(name = "from_account_id")
     private int fromAccountId;

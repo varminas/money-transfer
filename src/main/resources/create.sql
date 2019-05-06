@@ -1,5 +1,5 @@
 CREATE TABLE User(
-    id INT(11) PRIMARY KEY,
+    id BIGINT PRIMARY KEY,
     first_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
     phone VARCHAR(50) NOT NULL,
@@ -9,7 +9,7 @@ CREATE TABLE User(
 );
 
 CREATE TABLE Account(
-    id INT(11) PRIMARY KEY,
+    id BIGINT PRIMARY KEY,
     number VARCHAR(255) NOT NULL,
     balance DECIMAL NOT NULL,
     currency VARCHAR(5) NOT NULL,
@@ -21,7 +21,7 @@ CREATE TABLE Account(
 );
 
 CREATE TABLE Transaction(
-    id INT(11) PRIMARY KEY,
+    id BIGINT PRIMARY KEY,
     from_account_id INT(11) NOT NULL,
     to_account_id INT(11) NOT NULL,
     amount DECIMAL NOT NULL,

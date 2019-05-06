@@ -16,7 +16,7 @@ public class User extends BasePersistentEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     @Column(name = "id")
-    private int id;
+    private Long id;
 
     @Column(name = "first_name", nullable = false)
     private String firstName;
@@ -36,7 +36,7 @@ public class User extends BasePersistentEntity {
     private List<Account> accounts;
 
     @Builder
-    public User(LocalDateTime createdAt, LocalDateTime updatedAt, int id, String firstName, String lastName,
+    public User(LocalDateTime createdAt, LocalDateTime updatedAt, Long id, String firstName, String lastName,
                 Gender gender, String phone, List<Account> accounts) {
         super(createdAt, updatedAt);
         this.id = id;
