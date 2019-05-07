@@ -5,7 +5,7 @@ import lt.arminai.moneyTransfer.model.Transaction;
 import java.util.List;
 
 public interface TransactionRepository {
-    List<Transaction> findByAccount(long accountId);
+    List<Transaction> findByAccount(String accountId);
 
     Transaction save(Transaction transaction);
 }

@@ -17,7 +17,7 @@ public class TransactionServiceImpl implements TransactionService {
     private TransactionRepository transactionRepository;
 
     @Override
-    public List<Transaction> getTransactionsByAccount(long accountId) {
+    public List<Transaction> getTransactionsByAccount(String accountId) {
         return transactionRepository.findByAccount(accountId);
     }
 

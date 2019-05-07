@@ -22,7 +22,7 @@ public class UserResource {
     @GET
     @Path("{userId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getUser(@PathParam("userId") long userId) {
+    public Response getUser(@PathParam("userId") String userId) {
 
         return userService.getUser(userId)
                 .map(UserConverter::toDto)

@@ -5,5 +5,5 @@ import lt.arminai.moneyTransfer.model.User;
 import java.util.Optional;
 
 public interface UserRepository {
-    Optional<User> getById(long userId);
+    Optional<User> getById(String userId);
 }

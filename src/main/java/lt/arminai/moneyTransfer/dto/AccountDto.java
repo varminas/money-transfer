@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 public class AccountDto {
-    private Long id;
+    private String id;
     private String number;
     private BigDecimal balance;
     private CurrencyDto currency;

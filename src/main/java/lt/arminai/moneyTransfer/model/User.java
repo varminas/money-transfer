@@ -13,10 +13,6 @@ import java.util.List;
 @ToString
 @EqualsAndHashCode
 public class User extends BasePersistentEntity {
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Id
-    @Column(name = "id")
-    private Long id;
 
     @Column(name = "first_name", nullable = false)
     private String firstName;
@@ -36,10 +32,9 @@ public class User extends BasePersistentEntity {
     private List<Account> accounts;
 
     @Builder
-    public User(LocalDateTime createdAt, LocalDateTime updatedAt, Long id, String firstName, String lastName,
+    public User(String id, LocalDateTime createdAt, LocalDateTime updatedAt, String firstName, String lastName,
                 Gender gender, String phone, List<Account> accounts) {
-        super(createdAt, updatedAt);
-        this.id = id;
+        super(id, createdAt, updatedAt);
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;

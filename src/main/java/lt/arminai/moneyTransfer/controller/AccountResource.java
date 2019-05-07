@@ -29,7 +29,7 @@ public class AccountResource {
     @GET
     @Path("{accountId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAccount(@PathParam("accountId") long accountId) {
+    public Response getAccount(@PathParam("accountId") String accountId) {
 
         return accountService.getAccount(accountId)
                 .map(AccountConverter::toDto)
@@ -40,7 +40,7 @@ public class AccountResource {
     @GET
     @Path("{accountId}/transactions")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTransactionsByAccount(@PathParam("accountId") long accountId) {
+    public Response getTransactionsByAccount(@PathParam("accountId") String accountId) {
 
         List<Transaction> transactions = transactionService.getTransactionsByAccount(accountId);
 
@@ -51,7 +51,7 @@ public class AccountResource {
     @POST
     @Path("{accountId}/transactions")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response sendMoney(@PathParam("accountId") long accountId, TransactionDto transactionDto) {
+    public Response sendMoney(@PathParam("accountId") String accountId, TransactionDto transactionDto) {
 
         Transaction saved = transactionService.sendMoney(TransactionConverter.fromDto(transactionDto));
         URI createdUri = URI.create("/accounts/" + accountId + "/transactions");

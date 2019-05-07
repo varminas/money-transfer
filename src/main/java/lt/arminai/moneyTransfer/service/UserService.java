@@ -7,5 +7,5 @@ import java.util.Optional;
 
 @Local
 public interface UserService {
-    Optional<User> getUser(long userId);
+    Optional<User> getUser(String userId);
 }

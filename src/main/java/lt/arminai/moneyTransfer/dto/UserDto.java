@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @Builder
 public class UserDto {
-    private Long id;
+    private String id;
     private String firstName;
     private String lastName;
     private String phone;

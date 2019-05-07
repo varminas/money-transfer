@@ -14,11 +14,6 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 public class Account extends BasePersistentEntity {
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Id
-    @Column(name = "id")
-    private Long id;
-
     @Column(name = "number", nullable = false)
     private String number;
 
@@ -30,9 +25,8 @@ public class Account extends BasePersistentEntity {
     private Currency currency;
 
     @Builder
-    public Account(LocalDateTime createdAt, LocalDateTime updatedAt, Long id, String number, BigDecimal balance, Currency currency) {
-        super(createdAt, updatedAt);
-        this.id = id;
+    public Account(String id, LocalDateTime createdAt, LocalDateTime updatedAt, String number, BigDecimal balance, Currency currency) {
+        super(id, createdAt, updatedAt);
         this.number = number;
         this.balance = balance;
         this.currency = currency;
