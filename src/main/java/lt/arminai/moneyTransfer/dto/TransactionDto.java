@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
 @Builder
 public class TransactionDto {
     private String id;
-    private int fromAccountId;
-    private int toAccountId;
+    private String fromAccountNumber;
+    private String toAccountNumber;
     private BigDecimal amount;
     private LocalDateTime createdAt;
 }

@@ -23,11 +23,11 @@ public class Transaction {
     @Column(name = "id")
     private String id;
 
-    @Column(name = "from_account_id", nullable = false)
-    private int fromAccountId;
+    @Column(name = "from_account_number", nullable = false)
+    private String fromAccountNumber;
 
-    @Column(name = "to_account_id", nullable = false)
-    private int toAccountId;
+    @Column(name = "to_account_number", nullable = false)
+    private String toAccountNumber;
 
     @Column(name = "amount", nullable = false)
     private BigDecimal amount;

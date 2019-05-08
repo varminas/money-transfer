@@ -13,8 +13,8 @@ public final class TransactionConverter {
 
         return Transaction.builder()
                 .id(dto.getId())
-                .fromAccountId(dto.getFromAccountId())
-                .toAccountId(dto.getToAccountId())
+                .fromAccountNumber(dto.getFromAccountNumber())
+                .toAccountNumber(dto.getToAccountNumber())
                 .amount(dto.getAmount())
                 .createdAt(dto.getCreatedAt() != null ? dto.getCreatedAt() : LocalDateTime.now())
                 .build();
@@ -27,8 +27,8 @@ public final class TransactionConverter {
 
         return TransactionDto.builder()
                 .id(transaction.getId())
-                .fromAccountId(transaction.getFromAccountId())
-                .toAccountId(transaction.getToAccountId())
+                .fromAccountNumber(transaction.getFromAccountNumber())
+                .toAccountNumber(transaction.getToAccountNumber())
                 .amount(transaction.getAmount())
                 .createdAt(transaction.getCreatedAt())
                 .build();

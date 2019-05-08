@@ -18,10 +18,10 @@ public class TransactionRepositoryImpl implements TransactionRepository {
     private EntityManager em;
 
     @Override
-    public List<Transaction> findByAccount(String accountId) {
+    public List<Transaction> findByAccountNumber(String accountNumber) {
 
-        return em.createQuery("SELECT t FROM Transaction t WHERE t.fromAccountId = :accountId", Transaction.class)
-                .setParameter("accountId", accountId)
+        return em.createQuery("SELECT t FROM Transaction t WHERE t.fromAccountNumber = :accountNumber", Transaction.class)
+                .setParameter("accountNumber", accountNumber)
                 .getResultList();
     }
 

@@ -7,7 +7,7 @@ import java.util.List;
 
 @Local
 public interface TransactionService {
-    List<Transaction> getTransactionsByAccount(String accountId);
+    List<Transaction> getTransactionsByAccount(String accountNumber);
 
     Transaction sendMoney(Transaction transaction);
 }

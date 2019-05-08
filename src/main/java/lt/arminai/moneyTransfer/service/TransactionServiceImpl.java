@@ -6,7 +6,6 @@ import lt.arminai.moneyTransfer.persistence.TransactionRepository;
 import javax.ejb.Local;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.transaction.Transactional;
 import java.util.List;
 
 @ApplicationScoped
@@ -17,8 +16,8 @@ public class TransactionServiceImpl implements TransactionService {
     private TransactionRepository transactionRepository;
 
     @Override
-    public List<Transaction> getTransactionsByAccount(String accountId) {
-        return transactionRepository.findByAccount(accountId);
+    public List<Transaction> getTransactionsByAccount(String accountNumber) {
+        return transactionRepository.findByAccountNumber(accountNumber);
     }
 
     @Override

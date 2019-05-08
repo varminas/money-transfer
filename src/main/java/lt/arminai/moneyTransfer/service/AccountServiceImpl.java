@@ -6,6 +6,7 @@ import lt.arminai.moneyTransfer.persistence.AccountRepository;
 import javax.ejb.Local;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.util.List;
 import java.util.Optional;
 
 @ApplicationScoped
@@ -16,7 +17,12 @@ public class AccountServiceImpl implements AccountService {
     private AccountRepository accountRepository;
 
     @Override
-    public Optional<Account> getAccount(String accountId) {
-        return accountRepository.getById(accountId);
+    public Optional<Account> getAccount(String userId, String accountId) {
+        return accountRepository.getByUserIdAndAccountId(userId, accountId);
+    }
+
+    @Override
+    public List<Account> find(String userId) {
+        return accountRepository.findByUserId(userId);
     }
 }
