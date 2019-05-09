@@ -6,8 +6,9 @@ import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-import java.util.List;
+import java.math.BigDecimal;
 import java.util.Optional;
 
 @ApplicationScoped
@@ -19,21 +20,40 @@ public class AccountRepositoryImpl implements AccountRepository {
 
     @Override
     public Optional<Account> getByUserIdAndAccountId(String userId, String accountId) {
-        String SQL = "SELECT a FROM Account a WHERE t.oid = :accountId AND t.userId = :userId";
+        String SQL = "SELECT a FROM Account a WHERE a.id = :accountId AND a.user.id = :userId";
 
-        return Optional.ofNullable(em.createQuery(SQL, Account.class)
-                .setParameter("accountId", accountId)
-                .setParameter("userId", userId)
-                .getSingleResult()
-        );
+        try {
+           return Optional.of(em.createQuery(SQL, Account.class)
+                    .setParameter("accountId", accountId)
+                    .setParameter("userId", userId)
+                    .getSingleResult()
+           );
+        } catch (NoResultException e) {
+            logger.warn("No data found for userId {} and accountId {}", userId, accountId);
+            return Optional.empty();
+        }
     }
 
     @Override
-    public List<Account> findByUserId(String userId) {
-        String SQL = "SELECT a FROM Account a WHERE t.userId = :userId";
+    public Optional<Account> findByAccountNumber(String accountNumber) {
+        String SQL = "SELECT a FROM Account a WHERE a.number = :number";
 
         return em.createQuery(SQL, Account.class)
-                .setParameter("userId", userId)
-                .getResultList();
+                .setParameter("number", accountNumber)
+                .getResultList().stream().findFirst();
+    }
+
+    @Override
+    public Optional<Account> getById(String accountId) {
+        return Optional.ofNullable(em.find(Account.class, accountId));
+    }
+
+    @Override
+    public void updateBalance(String accountNumber, BigDecimal amount) {
+        findByAccountNumber(accountNumber)
+                .ifPresent(account -> {
+                    account.setBalance(amount);
+                    em.persist(account);
+                });
     }
 }

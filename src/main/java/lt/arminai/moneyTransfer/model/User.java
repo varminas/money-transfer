@@ -27,7 +27,7 @@ public class User extends BasePersistentEntity {
     @Column(name = "phone", nullable = false)
     private String phone;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "user_id")
     private List<Account> accounts;
 

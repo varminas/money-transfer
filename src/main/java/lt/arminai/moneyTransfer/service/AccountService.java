@@ -3,12 +3,16 @@ package lt.arminai.moneyTransfer.service;
 import lt.arminai.moneyTransfer.model.Account;
 
 import javax.ejb.Local;
-import java.util.List;
+import java.math.BigDecimal;
 import java.util.Optional;
 
 @Local
 public interface AccountService {
     Optional<Account> getAccount(String userId, String accountId);
 
-    List<Account> find(String userId);
+    Optional<Account> find(String accountNumber);
+
+    Optional<BigDecimal> getBalance(String accountId);
+
+    void updateBalance(String accountNumber, BigDecimal amount);
 }

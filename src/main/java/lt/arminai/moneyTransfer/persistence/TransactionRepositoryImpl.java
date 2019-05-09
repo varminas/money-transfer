@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 import java.util.List;
 
 @ApplicationScoped
@@ -26,7 +25,6 @@ public class TransactionRepositoryImpl implements TransactionRepository {
     }
 
     @Override
-    @Transactional
     public Transaction save(Transaction transaction) {
         logger.info("Persisted transaction {}", transaction);
 

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserNotFound {
+public class ErrorMessage {
+    private int errorCode;
     private String message;
 }

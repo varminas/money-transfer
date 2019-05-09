@@ -18,11 +18,16 @@ public class Account extends BasePersistentEntity {
     private String number;
 
     @Column(name = "balance", nullable = false)
+    @Setter
     private BigDecimal balance;
 
     @Column(name = "currency", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Currency currency;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Builder
     public Account(String id, LocalDateTime createdAt, LocalDateTime updatedAt, String number, BigDecimal balance, Currency currency) {

@@ -3,7 +3,7 @@ package lt.arminai.moneyTransfer.controller;
 import lombok.NoArgsConstructor;
 import lt.arminai.moneyTransfer.converter.*;
 import lt.arminai.moneyTransfer.dto.TransactionDto;
-import lt.arminai.moneyTransfer.dto.exception.UserNotFound;
+import lt.arminai.moneyTransfer.dto.exception.ErrorMessage;
 import lt.arminai.moneyTransfer.model.Account;
 import lt.arminai.moneyTransfer.model.Transaction;
 import lt.arminai.moneyTransfer.model.User;
@@ -17,11 +17,9 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URI;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RequestScoped
 @Path("/users")
@@ -91,7 +89,7 @@ public class UserResource {
 
         if (!user.isPresent()) {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity(new UserNotFound("User not found " + userId))
+                    .entity(new ErrorMessage(Response.Status.NOT_FOUND.getStatusCode(), "User not found " + userId))
                     .build();
         }
 
@@ -102,7 +100,8 @@ public class UserResource {
                 .map(transactions -> Response.ok(TransactionListConverter.toDto(transactions))
                         .build())
                 .orElse(Response.status(Response.Status.NOT_FOUND)
-                        .entity(new UserNotFound("Account not found " + accountId))
+                        .entity(new ErrorMessage(Response.Status.NOT_FOUND.getStatusCode(),
+                                "Account not found " + accountId))
                         .build()
                 );
     }
@@ -115,7 +114,7 @@ public class UserResource {
             @PathParam("accountId") String accountId,
             TransactionDto transactionDto
     ) {
-        Transaction saved = transactionService.sendMoney(TransactionConverter.fromDto(transactionDto));
+        Transaction saved = transactionService.transfer(userId, accountId, TransactionConverter.fromDto(transactionDto));
         URI createdUri = URI.create("/users" + userId + "/accounts/" + accountId + "/transactions");
 
         return Response.created(createdUri)
