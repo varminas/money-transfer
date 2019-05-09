@@ -48,7 +48,7 @@ public class TransactionServiceImpl implements TransactionService {
         BigDecimal balance = ensureBalance(accountId, transaction);
 
         accountService.updateBalance(transaction.getFromAccountNumber(), balance.subtract(transaction.getAmount()));
-        accountService.updateBalance(transaction.getToAccountNumber(), balance.add(transaction.getAmount()));
+        accountService.updateBalance(transaction.getToAccountNumber(), accountTo.get().getBalance().add(transaction.getAmount()));
 
         return transactionRepository.save(transaction);
     }

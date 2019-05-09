@@ -16,6 +16,7 @@ CREATE TABLE Account(
     user_id VARCHAR(36) NOT NULL,
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    optlock BIGINT NOT NULL DEFAULT 0,
     CONSTRAINT FK_user_id FOREIGN KEY (user_id)
         REFERENCES User(id)
 );

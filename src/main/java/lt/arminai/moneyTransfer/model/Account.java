@@ -5,13 +5,13 @@ import lombok.*;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Account")
 @Getter
 @NoArgsConstructor
 @ToString
-@EqualsAndHashCode
 public class Account extends BasePersistentEntity {
 
     @Column(name = "number", nullable = false)
@@ -29,11 +29,30 @@ public class Account extends BasePersistentEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Version
+    @Column(name = "optlock", columnDefinition = "integer DEFAULT 0", nullable = false)
+    private Long version;
+
     @Builder
     public Account(String id, LocalDateTime createdAt, LocalDateTime updatedAt, String number, BigDecimal balance, Currency currency) {
         super(id, createdAt, updatedAt);
         this.number = number;
         this.balance = balance;
         this.currency = currency;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Account account = (Account) o;
+        return Objects.equals(number, account.number) &&
+                Objects.equals(balance, account.balance) &&
+                currency == account.currency;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(number, balance, currency);
     }
 }
