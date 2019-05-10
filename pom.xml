@@ -21,11 +21,12 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <app.name>LibertyProject</app.name>
+        <app.name>moneyTransfer</app.name>
         <testServerHttpPort>9080</testServerHttpPort>
         <testServerHttpsPort>9443</testServerHttpsPort>
         <package.file>${project.build.directory}/${app.name}.zip</package.file>
         <packaging.type>usr</packaging.type>
+        <warContext>${app.name}</warContext>
         <skipTests>false</skipTests>
     </properties>
 
@@ -108,6 +109,24 @@
             <groupId>org.eclipse</groupId>
             <artifactId>yasson</artifactId>
             <version>1.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
+            <version>3.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.9.8</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>2.9.8</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -209,7 +228,7 @@
                         <version>RELEASE</version>
                         <type>zip</type>
                     </assemblyArtifact>
-                    <serverName>sampleAppServer</serverName>
+                    <serverName>moneyTransfer</serverName>
                     <configFile>src/main/liberty/config/server.xml</configFile>
                     <packageFile>${package.file}</packageFile>
                     <include>${packaging.type}</include>
@@ -219,38 +238,28 @@
                     </bootstrapProperties>
                 </configuration>
             </plugin>
-            <!-- Plugin to run functional tests -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.18.1</version>
+                <version>3.0.0-M1</version>
                 <executions>
                     <execution>
-                        <phase>integration-test</phase>
-                        <id>integration-test</id>
                         <goals>
                             <goal>integration-test</goal>
+                            <goal>verify</goal>
                         </goals>
                         <configuration>
                             <includes>
                                 <include>**/it/**</include>
                             </includes>
                             <systemPropertyVariables>
-                                <liberty.test.port>${testServerHttpPort}</liberty.test.port>
+                                <liberty.test.port>
+                                    ${testServerHttpPort}
+                                </liberty.test.port>
                             </systemPropertyVariables>
                         </configuration>
                     </execution>
-                    <execution>
-                        <id>verify-results</id>
-                        <goals>
-                            <goal>verify</goal>
-                        </goals>
-                    </execution>
                 </executions>
-                <configuration>
-                    <summaryFile>${project.build.directory}/test-reports/it/failsafe-summary.xml</summaryFile>
-                    <reportsDirectory>${project.build.directory}/test-reports/it</reportsDirectory>
-                </configuration>
             </plugin>
         </plugins>
     </build>

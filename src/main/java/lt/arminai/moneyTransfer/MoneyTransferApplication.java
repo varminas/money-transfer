@@ -15,5 +15,5 @@ import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
 @ApplicationPath("banking")
-public class SampleApplication extends Application {
+public class MoneyTransferApplication extends Application {
 }
