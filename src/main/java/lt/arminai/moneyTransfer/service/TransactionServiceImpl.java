@@ -6,7 +6,7 @@ import lt.arminai.moneyTransfer.dto.exception.EntityNotFoundException;
 import lt.arminai.moneyTransfer.dto.exception.NotEnoughBalanceException;
 import lt.arminai.moneyTransfer.model.Account;
 import lt.arminai.moneyTransfer.model.Transaction;
-import lt.arminai.moneyTransfer.persistence.AccountRepository;
+import lt.arminai.moneyTransfer.model.User;
 import lt.arminai.moneyTransfer.persistence.TransactionRepository;
 
 import javax.ejb.Local;
@@ -14,6 +14,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,20 +26,32 @@ public class TransactionServiceImpl implements TransactionService {
 
     private TransactionRepository transactionRepository;
     private AccountService accountService;
+    private UserService userService;
 
     @Inject
-    public TransactionServiceImpl(TransactionRepository transactionRepository, AccountService accountService) {
+    public TransactionServiceImpl(TransactionRepository transactionRepository, AccountService accountService, UserService userService) {
         this.transactionRepository = transactionRepository;
         this.accountService = accountService;
+        this.userService = userService;
     }
 
     @Override
-    public List<Transaction> getTransactionsByAccount(String accountNumber) {
-        return transactionRepository.findByAccountNumber(accountNumber);
+    public List<Transaction> getTransactionsByAccount(String userId, String accountId) {
+        Optional<User> user = userService.getUser("bed6109f-ef8a-47ec-8fa4-e57c71415a10");
+
+        if (!user.isPresent()) {
+            throw new EntityNotFoundException(String.format("User not found '%s')", userId));
+        }
+
+        return user.get().getAccounts().stream()
+                .filter(account -> accountId.equals(account.getId()))
+                .findFirst()
+                .map(account -> transactionRepository.findByAccountNumber(account.getNumber()))
+                .orElse(Collections.emptyList());
     }
 
     @Override
-    @Transactional(Transactional.TxType.REQUIRED )
+    @Transactional(Transactional.TxType.REQUIRED)
     public Transaction transfer(String userId, String accountId, Transaction transaction) {
         Optional<Account> accountFrom = accountService.find(transaction.getFromAccountNumber());
         Optional<Account> accountTo = accountService.find(transaction.getToAccountNumber());

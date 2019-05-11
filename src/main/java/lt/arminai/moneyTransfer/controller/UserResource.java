@@ -86,25 +86,9 @@ public class UserResource {
             @PathParam("userId") String userId,
             @PathParam("accountId") String accountId
     ) {
-        Optional<User> user = userService.getUser(userId);
+        List<Transaction> transactions = transactionService.getTransactionsByAccount(userId, accountId);
 
-        if (!user.isPresent()) {
-            return Response.status(Response.Status.NOT_FOUND)
-                    .entity(new ErrorMessage(Response.Status.NOT_FOUND.getStatusCode(), "User not found " + userId))
-                    .build();
-        }
-
-        return user.get().getAccounts().stream()
-                .filter(account -> accountId.equals(account.getId()))
-                .findFirst()
-                .map(account -> transactionService.getTransactionsByAccount(account.getNumber()))
-                .map(transactions -> Response.ok(TransactionListConverter.toDto(transactions))
-                        .build())
-                .orElse(Response.status(Response.Status.NOT_FOUND)
-                        .entity(new ErrorMessage(Response.Status.NOT_FOUND.getStatusCode(),
-                                "Account not found " + accountId))
-                        .build()
-                );
+        return Response.ok(TransactionListConverter.toDto(transactions)).build();
     }
 
     @POST

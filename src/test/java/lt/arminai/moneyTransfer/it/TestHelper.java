@@ -70,7 +70,7 @@ public final class TestHelper {
                 .amount(BigDecimal.valueOf(15))
                 .fromAccountNumber("1000001")
                 .toAccountNumber("1000003")
-                .createdAt(LocalDateTime.parse("2019-01-04 20:04:35.69"))
+                .createdAt(LocalDateTime.parse("2019-01-04T20:04:35.069"))
                 .build();
     }
 
