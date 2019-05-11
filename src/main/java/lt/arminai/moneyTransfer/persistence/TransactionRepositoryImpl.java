@@ -18,8 +18,9 @@ public class TransactionRepositoryImpl implements TransactionRepository {
 
     @Override
     public List<Transaction> findByAccountNumber(String accountNumber) {
+        String SQL = "SELECT t FROM Transaction t WHERE t.fromAccountNumber = :accountNumber ORDER BY t.createdAt";
 
-        return em.createQuery("SELECT t FROM Transaction t WHERE t.fromAccountNumber = :accountNumber", Transaction.class)
+        return em.createQuery(SQL, Transaction.class)
                 .setParameter("accountNumber", accountNumber)
                 .getResultList();
     }

@@ -5,9 +5,9 @@ import lt.arminai.moneyTransfer.converter.*;
 import lt.arminai.moneyTransfer.dto.TransactionDto;
 import lt.arminai.moneyTransfer.dto.exception.ErrorMessage;
 import lt.arminai.moneyTransfer.model.Account;
+import lt.arminai.moneyTransfer.model.BasePersistentEntity;
 import lt.arminai.moneyTransfer.model.Transaction;
 import lt.arminai.moneyTransfer.model.User;
-import lt.arminai.moneyTransfer.service.AccountService;
 import lt.arminai.moneyTransfer.service.TransactionService;
 import lt.arminai.moneyTransfer.service.UserService;
 
@@ -18,6 +18,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,13 +28,11 @@ import java.util.Optional;
 public class UserResource {
 
     private UserService userService;
-    private AccountService accountService;
     private TransactionService transactionService;
 
     @Inject
-    public UserResource(UserService userService, AccountService accountService, TransactionService transactionService) {
+    public UserResource(UserService userService, TransactionService transactionService) {
         this.userService = userService;
-        this.accountService = accountService;
         this.transactionService = transactionService;
     }
 
@@ -55,6 +54,8 @@ public class UserResource {
         List<Account> accounts = userService.getUser(userId)
                 .map(User::getAccounts)
                 .orElse(Collections.emptyList());
+
+        accounts.sort(Comparator.comparing(BasePersistentEntity::getCreatedAt));
 
         return Response.ok(AccountListConverter.toDto(accounts))
                 .build();

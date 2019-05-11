@@ -31,4 +31,5 @@ CREATE TABLE Transaction(
 
 CREATE INDEX idx_from_account_number ON Transaction(from_account_number);
 CREATE INDEX idx_to_account_number ON Transaction(to_account_number);
+CREATE INDEX idx_created_at ON Transaction(created_at);
 
