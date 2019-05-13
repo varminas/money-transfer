@@ -11,6 +11,7 @@ import lt.arminai.moneyTransfer.model.User;
 import lt.arminai.moneyTransfer.service.TransactionService;
 import lt.arminai.moneyTransfer.service.UserService;
 
+import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -38,6 +39,7 @@ public class UserResource {
 
     @GET
     @Path("{userId}")
+//    @RolesAllowed({ "admin", "user" })
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUser(@PathParam("userId") String userId) {
 
