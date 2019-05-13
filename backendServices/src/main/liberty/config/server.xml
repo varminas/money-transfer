@@ -1,5 +1,4 @@
-<server description="Sample Liberty server">
-
+<server description="Backend server">
     <featureManager>
         <feature>jaxrs-2.1</feature>
         <feature>jsonp-1.1</feature>
@@ -7,15 +6,20 @@
         <feature>jpa-2.2</feature>
         <feature>ssl-1.0</feature>
         <feature>mpJwt-1.1</feature>
+        <feature>appSecurity-3.0</feature>
     </featureManager>
 
-    <applicationManager autoExpand="true"/>
+    <!-- This is the keystore that will be used by SSL and by JWT.
+         The keystore is built using the maven keytool plugin -->
+    <keyStore id="defaultKeyStore" location="keystore.jceks" type="JCEKS"
+              password="secret" />
 
-    <mpMetrics authentication="false"/>
+    <!-- The HTTP ports that the application will use. -->
+    <httpEndpoint id="defaultHttpEndpoint" host="*" httpPort="${http.port}"
+                  httpsPort="${https.port}"/>
 
-    <httpEndpoint host="*" httpPort="${default.http.port}" httpsPort="${default.https.port}" id="defaultHttpEndpoint"/>
-
-    <webApplication location="money-transfer.war" contextRoot="/"/>
+    <!-- The application containing the user and login endpoints. -->
+    <webApplication location="${app.name}" contextRoot="/" />
 
     <!-- H2 Library Configuration -->
     <library id="H2JDBCLib">
@@ -28,13 +32,8 @@
         <properties URL="jdbc:h2:mem:banking;INIT=RUNSCRIPT FROM 'classpath:create.sql'\;RUNSCRIPT FROM 'classpath:init.sql'"/>
     </dataSource>
 
-    <!-- This is the keystore that will be used by SSL and by JWT.
-         The keystore is built using the maven keytool plugin -->
-    <keyStore id="defaultKeyStore" location="keystore.jceks" type="JCEKS"
-              password="secret" />
-
     <!-- The MP JWT configuration that injects the caller's JWT into a
          ResourceScoped bean for inspection. -->
-    <mpJwt id="jwtUserConsumer" keyName="default" audiences="bankingapp"
+    <mpJwt id="jwtUserConsumer" keyName="default" audiences="simpleapp"
            issuer="${jwt.issuer}"/>
 </server>

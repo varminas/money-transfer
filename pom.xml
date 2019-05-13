@@ -14,7 +14,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <warfile.name>moneyTransfer</warfile.name>
+        <warfile.name>money-transfer</warfile.name>
 
         <!-- Liberty Server -->
         <version.liberty>RELEASE</version.liberty>
