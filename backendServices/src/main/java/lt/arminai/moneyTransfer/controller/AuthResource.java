@@ -8,16 +8,17 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.security.PermitAll;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.security.enterprise.SecurityContext;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.SecurityContext;
+//import javax.ws.rs.core.SecurityContext;
 
-//@RequestScoped
-//@Path("/auth")
-//@PermitAll
+@RequestScoped
+@Path("/tokens")
+@PermitAll
 @NoArgsConstructor
 public class AuthResource {
     private static final Logger logger = LoggerFactory.getLogger(AuthResource.class);
@@ -27,8 +28,8 @@ public class AuthResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getJwt() {
-        logger.info("getJwt(), {}", securityContext.getUserPrincipal());
-        if (securityContext.isUserInRole("USER")) {
+        logger.info("getJwt()");
+        if (securityContext.isCallerInRole("USER")) {
             return Response.ok(new AuthDto("abc")).build();
         }
 
