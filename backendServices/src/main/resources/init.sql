@@ -1,5 +1,8 @@
-INSERT INTO User VALUES ('bed6109f-ef8a-47ec-8fa4-e57c71415a10', 'Olivier', 'Bruce', '+37060012345', 'M', parsedatetime('2019-01-02 20:04:35.69', 'yyyy-MM-dd hh:mm:ss.SS'), parsedatetime('2019-01-03 02:03:04.69', 'yyyy-MM-dd hh:mm:ss.SS'));
-INSERT INTO User VALUES ('bed6109f-ef8a-47ec-8fa4-e57c71415a11', 'John', 'Snow', '+37060012341', 'M', parsedatetime('2019-02-03 15:04:35.69', 'yyyy-MM-dd hh:mm:ss.SS'), parsedatetime('2019-03-15 04:03:04.69', 'yyyy-MM-dd hh:mm:ss.SS'));
+INSERT INTO User VALUES ('bed6109f-ef8a-47ec-8fa4-e57c71415a10', 'ob123', 'secret', 'Olivier', 'Bruce', '+37060012345', 'M', parsedatetime('2019-01-02 20:04:35.69', 'yyyy-MM-dd hh:mm:ss.SS'), parsedatetime('2019-01-03 02:03:04.69', 'yyyy-MM-dd hh:mm:ss.SS'));
+INSERT INTO User VALUES ('bed6109f-ef8a-47ec-8fa4-e57c71415a11', 'js456', 'secret', 'John', 'Snow', '+37060012341', 'M', parsedatetime('2019-02-03 15:04:35.69', 'yyyy-MM-dd hh:mm:ss.SS'), parsedatetime('2019-03-15 04:03:04.69', 'yyyy-MM-dd hh:mm:ss.SS'));
+
+INSERT INTO user_roles VALUES('aafdb294-92f1-469c-80fd-270a1e959601', 'ob123', 'USER', parsedatetime('2019-03-15 04:03:04.69', 'yyyy-MM-dd hh:mm:ss.SS'), parsedatetime('2019-03-15 04:03:04.69', 'yyyy-MM-dd hh:mm:ss.SS'));
+INSERT INTO user_roles VALUES('aafdb294-92f1-469c-80fd-270a1e959602', 'js456', 'USER', parsedatetime('2019-03-15 04:03:04.69', 'yyyy-MM-dd hh:mm:ss.SS'), parsedatetime('2019-03-15 04:03:04.69', 'yyyy-MM-dd hh:mm:ss.SS'));
 
 INSERT INTO Account VALUES ('bed6109f-ef8a-47ec-8fa4-e57c71415a12', '1000001', 4000, 'EUR', 'bed6109f-ef8a-47ec-8fa4-e57c71415a10', parsedatetime('2019-01-03 20:04:35.69', 'yyyy-MM-dd hh:mm:ss.SS'), parsedatetime('2019-01-04 02:03:04.69', 'yyyy-MM-dd hh:mm:ss.SS'), 0);
 INSERT INTO Account VALUES ('bed6109f-ef8a-47ec-8fa4-e57c71415a13', '1000002', 2000, 'USD', 'bed6109f-ef8a-47ec-8fa4-e57c71415a10', parsedatetime('2019-01-04 20:04:35.69', 'yyyy-MM-dd hh:mm:ss.SS'), parsedatetime('2019-01-05 02:03:04.69', 'yyyy-MM-dd hh:mm:ss.SS'), 0);

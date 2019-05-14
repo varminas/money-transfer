@@ -20,6 +20,7 @@ public final class UserConverter {
 
         return User.builder()
                 .id(dto.getId())
+                .username(dto.getUsername())
                 .firstName(dto.getFirstName())
                 .lastName(dto.getLastName())
                 .phone(dto.getPhone())
@@ -42,6 +43,7 @@ public final class UserConverter {
 
         return UserDto.builder()
                 .id(user.getId())
+                .username(user.getUsername())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .phone(user.getPhone())

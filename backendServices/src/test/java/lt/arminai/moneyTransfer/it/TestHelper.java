@@ -22,6 +22,7 @@ public final class TestHelper {
     public static UserDto getUserDto1() {
         return UserDto.builder()
                 .id(USER_ID1)
+                .username("ob123")
                 .firstName("Olivier")
                 .lastName("Bruce")
                 .gender(GenderDto.M)

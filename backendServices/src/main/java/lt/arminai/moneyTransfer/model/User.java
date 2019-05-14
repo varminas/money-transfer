@@ -14,6 +14,12 @@ import java.util.List;
 @EqualsAndHashCode
 public class User extends BasePersistentEntity {
 
+    @Column(name = "username", nullable = false)
+    private String username;
+
+    @Column(name = "password", nullable = false)
+    private String password;
+
     @Column(name = "first_name", nullable = false)
     private String firstName;
 
@@ -32,9 +38,11 @@ public class User extends BasePersistentEntity {
     private List<Account> accounts;
 
     @Builder
-    public User(String id, LocalDateTime createdAt, LocalDateTime updatedAt, String firstName, String lastName,
-                Gender gender, String phone, List<Account> accounts) {
+    public User(String id, LocalDateTime createdAt, LocalDateTime updatedAt, String username, String password,
+                String firstName, String lastName, Gender gender, String phone, List<Account> accounts) {
         super(id, createdAt, updatedAt);
+        this.username = username;
+        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;

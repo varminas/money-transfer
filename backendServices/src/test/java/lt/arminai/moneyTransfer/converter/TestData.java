@@ -39,6 +39,7 @@ public final class TestData {
     public static User getUser(List<Account> accounts) {
         return User.builder()
                 .id("58fdb294-92f1-469c-80fd-270a1e9596df")
+                .username("123456")
                 .firstName("Fname")
                 .lastName("Lname")
                 .accounts(accounts)
@@ -52,6 +53,7 @@ public final class TestData {
     public static UserDto getUserDto(List<AccountDto> accounts) {
         return UserDto.builder()
                 .id("58fdb294-92f1-469c-80fd-270a1e9596df")
+                .username("123456")
                 .firstName("Fname")
                 .lastName("Lname")
                 .phone("+37060012345")
