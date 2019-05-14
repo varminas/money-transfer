@@ -14,7 +14,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-//import javax.ws.rs.core.SecurityContext;
 
 @RequestScoped
 @Path("/tokens")
@@ -22,13 +21,14 @@ import javax.ws.rs.core.Response;
 @NoArgsConstructor
 public class AuthResource {
     private static final Logger logger = LoggerFactory.getLogger(AuthResource.class);
+
     @Inject
     private SecurityContext securityContext;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getJwt() {
-        logger.info("getJwt()");
+        logger.info("getJwt(), principal: {}", securityContext.getCallerPrincipal());
         if (securityContext.isCallerInRole("USER")) {
             return Response.ok(new AuthDto("abc")).build();
         }
