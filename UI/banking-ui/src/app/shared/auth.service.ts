@@ -8,6 +8,7 @@ export class AuthService {
     private readonly BASE_URL = '/banking/';
 
     authenticated = false;
+    jwtToken: string;
 
     constructor(private http: HttpClient) {
     }
@@ -18,16 +19,16 @@ export class AuthService {
             authorization: 'Basic ' + btoa(credentials.username + ':' + credentials.password)
         } : {});
 
-        const URL = this.BASE_URL + 'auth/tokens';
+        const URL = this.BASE_URL + 'tokens';
         this.http.get(URL, { headers: headers }).subscribe(response => {
-            // TODO check correct response
-            if (response['name']) {
+            if (response['jwt']) {
                 this.authenticated = true;
+                this.jwtToken = response['jwt'];
             } else {
                 this.authenticated = false;
+                this.jwtToken = undefined;
             }
             return callback && callback();
         });
-
     }
 }

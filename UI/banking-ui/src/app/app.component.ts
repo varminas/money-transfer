@@ -10,7 +10,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AppComponent {
     constructor(private authService: AuthService, private http: HttpClient, private router: Router) {
-        this.authService.authenticate(undefined, undefined);
+        // this.authService.authenticate(undefined, undefined);
     }
 
     logout() {

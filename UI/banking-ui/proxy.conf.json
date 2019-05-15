@@ -1,6 +1,6 @@
 {
 	"/banking/*": {
-		"target": "http://localhost:5050",
+		"target": "https://localhost:5051",
 		"secure": false,
 		"logLevel": "debug",
 		"changeOrigin": true

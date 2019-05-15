@@ -16,4 +16,8 @@ export class HomeComponent {
     authenticated() {
         return this.authService.authenticated;
     }
+
+    get jwtToken(): string {
+        return this.authService.jwtToken;
+    }
 }
