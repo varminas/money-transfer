@@ -5,6 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
     providedIn: 'root'
 })
 export class AuthService {
+    private readonly BASE_URL = '/banking/';
 
     authenticated = false;
 
@@ -17,7 +18,9 @@ export class AuthService {
             authorization: 'Basic ' + btoa(credentials.username + ':' + credentials.password)
         } : {});
 
-        this.http.get('user', { headers: headers }).subscribe(response => {
+        const URL = this.BASE_URL + 'auth/tokens';
+        this.http.get(URL, { headers: headers }).subscribe(response => {
+            // TODO check correct response
             if (response['name']) {
                 this.authenticated = true;
             } else {
