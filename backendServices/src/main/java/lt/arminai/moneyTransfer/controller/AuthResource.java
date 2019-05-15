@@ -36,7 +36,6 @@ public class AuthResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getJwt() {
         if (securityContext.isCallerInRole("USER")) {
-            logger.info("Principal: '{}'", securityContext.getCallerPrincipal());
             String name = securityContext.getCallerPrincipal().getName();
             String jwt = authService.createJwt(name);
 
