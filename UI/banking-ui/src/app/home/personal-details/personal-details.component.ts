@@ -13,6 +13,8 @@ export class PersonalDetailsComponent implements OnInit {
     @Input() user: User;
     displayTransfer = false;
 
+    transaction: Transaction;
+
     constructor(public authService: AuthService) {
     }
 
@@ -21,9 +23,11 @@ export class PersonalDetailsComponent implements OnInit {
 
     transfer(): void {
         this.displayTransfer = true;
+        this.transaction = undefined;
     }
 
     onTransferred(transaction: Transaction): void {
         this.displayTransfer = false;
+        this.transaction = transaction;
     }
 }

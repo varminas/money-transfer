@@ -9,5 +9,5 @@ import java.util.List;
 public interface TransactionService {
     List<Transaction> getTransactionsByAccount(String userId, String accountId);
 
-    Transaction transfer(String userId, String accountId, Transaction transaction);
+    Transaction transfer(String userId, Transaction transaction);
 }

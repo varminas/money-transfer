@@ -38,7 +38,7 @@ export class UserService {
     }
 
     transfer(accountFrom: string, accountTo: string, amount: number): Observable<Transaction> {
-        const URL = this.BASE_URL + 'users/' + this.auth.userId + '/accounts/' + accountFrom + '/transactions';
+        const URL = this.BASE_URL + 'users/' + this.auth.userId + '/accounts/transactions';
         const transaction: Transaction = {
             fromAccountNumber: accountFrom,
             toAccountNumber: accountTo,

@@ -28,3 +28,8 @@
 
 <button type="button" class="btn btn-primary" (click)="transfer()">Transfer money</button>
 <app-transfer *ngIf="displayTransfer" (transferred)="onTransferred($event)"></app-transfer>
+
+<div class="recent-transaction" *ngIf="transaction">
+	<div>Recent transaction</div>
+	<app-transaction [transaction]="transaction"></app-transaction>
+</div>

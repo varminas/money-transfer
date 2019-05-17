@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output, Input } from '@angular/core';
 import { Transaction } from '../../shared/service/user/transaction';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../shared/service/user/user.service';
@@ -16,6 +16,8 @@ export class TransferComponent implements OnInit, OnDestroy {
     form: FormGroup;
 
     errorMessage: string = undefined;
+
+    @Input() accountId: string;
 
     @Output() transferred = new EventEmitter<Transaction>();
 

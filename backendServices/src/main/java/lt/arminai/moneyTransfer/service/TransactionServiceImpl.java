@@ -52,49 +52,44 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     @Transactional(Transactional.TxType.REQUIRED)
-    public Transaction transfer(String userId, String accountId, Transaction transaction) {
-        Optional<Account> accountFrom = accountService.find(transaction.getFromAccountNumber());
-        Optional<Account> accountTo = accountService.find(transaction.getToAccountNumber());
+    public Transaction transfer(String userId, Transaction transaction) {
+        Account accountFrom = getAccount(transaction.getFromAccountNumber(), "FROM");
+        Account accountTo = getAccount(transaction.getToAccountNumber(), "TO");
 
-        ensureDataValidity(accountFrom, accountTo, userId, accountId, transaction);
+        ensureDataValidity(accountFrom, userId, transaction);
 
-        BigDecimal balance = ensureBalance(accountId, transaction);
+        BigDecimal balance = ensureBalance(accountFrom.getId(), transaction);
 
         accountService.updateBalance(transaction.getFromAccountNumber(), balance.subtract(transaction.getAmount()));
-        accountService.updateBalance(transaction.getToAccountNumber(), accountTo.get().getBalance().add(transaction.getAmount()));
+        accountService.updateBalance(transaction.getToAccountNumber(), accountTo.getBalance().add(transaction.getAmount()));
 
         return transactionRepository.save(transaction);
     }
 
-    private void ensureDataValidity(Optional<Account> accountFrom, Optional<Account> accountTo, String userId,
-                                    String accountId, Transaction transaction
-    ) {
-        Account account = accountFrom
+    private Account getAccount(String accountNumber, String accountType) {
+        return accountService.find(accountNumber)
                 .orElseThrow(() -> new EntityNotFoundException(
-                        String.format("Account '%s' the money should be transferred from does not exist",
-                                transaction.getFromAccountNumber())));
+                        String.format("Account '%s' the money should be transferred %s does not exist",
+                                accountNumber, accountType)));
+    }
 
-        if (!account.getUser().getId().equals(userId)) {
-            throw new EntityNotFoundException(String.format("User '%s' and Account '%s' not found", userId, accountId));
+    private void ensureDataValidity(Account accountFrom, String userId, Transaction transaction
+    ) {
+        if (!accountFrom.getUser().getId().equals(userId)) {
+            throw new EntityNotFoundException(String.format("User '%s' and Account '%s' not found", userId, accountFrom));
         }
 
-        if (!accountTo.isPresent()) {
-            throw new EntityNotFoundException(
-                    String.format("Account '%s' the money should be transferred to does not exist",
-                            transaction.getToAccountNumber())
-            );
-        }
-
-        if (!account.getNumber().equals(transaction.getFromAccountNumber())) {
+        if (!accountFrom.getNumber().equals(transaction.getFromAccountNumber())) {
             throw new DataIntegrationException(
-                    String.format("Provided accountId '%s' and accountNumber '%s' belongs to different account",
-                            accountId, transaction.getFromAccountNumber())
+                    String.format("Provided accountNumbers '%s' and '%s' are different",
+                            accountFrom, transaction.getFromAccountNumber())
             );
         }
     }
 
     private BigDecimal ensureBalance(String accountId, Transaction transaction) {
-        BigDecimal balance = accountService.getBalance(accountId).orElse(BigDecimal.ZERO);
+        BigDecimal balance = accountService.getBalance(accountId)
+                .orElseThrow(() -> new EntityNotFoundException("Account not found"));
 
         if (transaction.getAmount().compareTo(balance) > 0) {
             throw new NotEnoughBalanceException(String.format("Not enough balance on account '%s'",

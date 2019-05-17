@@ -95,16 +95,15 @@ public class UserResource {
     }
 
     @POST
-    @Path("{userId}/accounts/{accountId}/transactions")
+    @Path("{userId}/accounts/transactions")
     @RolesAllowed({"ADMIN", "USER" })
     @Produces(MediaType.APPLICATION_JSON)
     public Response transfer(
             @PathParam("userId") String userId,
-            @PathParam("accountId") String accountId,
             TransactionDto transactionDto
     ) {
-        Transaction saved = transactionService.transfer(userId, accountId, TransactionConverter.fromDto(transactionDto));
-        URI createdUri = URI.create("/users" + userId + "/accounts/" + accountId + "/transactions");
+        Transaction saved = transactionService.transfer(userId, TransactionConverter.fromDto(transactionDto));
+        URI createdUri = URI.create("/users" + userId + "/accounts/transactions");
 
         return Response.created(createdUri)
                 .entity(saved)
