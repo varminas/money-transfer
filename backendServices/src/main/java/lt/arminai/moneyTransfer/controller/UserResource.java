@@ -3,7 +3,6 @@ package lt.arminai.moneyTransfer.controller;
 import lombok.NoArgsConstructor;
 import lt.arminai.moneyTransfer.converter.*;
 import lt.arminai.moneyTransfer.dto.TransactionDto;
-import lt.arminai.moneyTransfer.dto.exception.ErrorMessage;
 import lt.arminai.moneyTransfer.model.Account;
 import lt.arminai.moneyTransfer.model.BasePersistentEntity;
 import lt.arminai.moneyTransfer.model.Transaction;
@@ -21,7 +20,6 @@ import java.net.URI;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
 @RequestScoped
 @Path("/users")
@@ -39,7 +37,7 @@ public class UserResource {
 
     @GET
     @Path("{userId}")
-//    @RolesAllowed({ "admin", "user" })
+    @RolesAllowed({"ADMIN", "USER" })
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUser(@PathParam("userId") String userId) {
 
@@ -51,6 +49,7 @@ public class UserResource {
 
     @GET
     @Path("{userId}/accounts")
+    @RolesAllowed({"ADMIN", "USER" })
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAccounts(@PathParam("userId") String userId) {
         List<Account> accounts = userService.getUser(userId)
@@ -65,6 +64,7 @@ public class UserResource {
 
     @GET
     @Path("{userId}/accounts/{accountId}")
+    @RolesAllowed({"ADMIN", "USER" })
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAccount(
             @PathParam("userId") String userId,
@@ -83,6 +83,7 @@ public class UserResource {
 
     @GET
     @Path("{userId}/accounts/{accountId}/transactions")
+    @RolesAllowed({"ADMIN", "USER" })
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTransactionsByAccount(
             @PathParam("userId") String userId,
@@ -95,6 +96,7 @@ public class UserResource {
 
     @POST
     @Path("{userId}/accounts/{accountId}/transactions")
+    @RolesAllowed({"ADMIN", "USER" })
     @Produces(MediaType.APPLICATION_JSON)
     public Response transfer(
             @PathParam("userId") String userId,

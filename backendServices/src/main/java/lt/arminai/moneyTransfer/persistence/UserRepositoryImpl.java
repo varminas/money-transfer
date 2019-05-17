@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.util.Optional;
 
@@ -21,5 +22,20 @@ public class UserRepositoryImpl implements UserRepository {
         User user = em.find(User.class, userId);
 
         return Optional.ofNullable(user);
+    }
+
+    @Override
+    public Optional<User> getByUserName(String username) {
+        String SQL = "SELECT u FROM User u WHERE u.username = :username";
+
+        try {
+            return Optional.of(em.createQuery(SQL, User.class)
+                    .setParameter("username", username)
+                    .getSingleResult()
+            );
+        } catch (NoResultException e) {
+            logger.warn("No data found for username {}", username);
+            return Optional.empty();
+        }
     }
 }
