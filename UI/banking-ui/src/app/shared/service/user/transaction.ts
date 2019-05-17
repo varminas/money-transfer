@@ -1,7 +1,7 @@
 export interface Transaction {
+    id?: string;
     amount: number;
-    createdAt: string;
     fromAccountNumber: string;
-    id: string;
     toAccountNumber: string;
+    createdAt?: string;
 }

@@ -36,4 +36,17 @@ export class UserService {
         const jwt = this.auth.token;
         return new HttpHeaders(jwt ? jwt : {});
     }
+
+    transfer(accountFrom: string, accountTo: string, amount: number): Observable<Transaction> {
+        const URL = this.BASE_URL + 'users/' + this.auth.userId + '/accounts/' + accountFrom + '/transactions';
+        const transaction: Transaction = {
+            fromAccountNumber: accountFrom,
+            toAccountNumber: accountTo,
+            amount: amount
+        };
+        return this.http.post(URL, transaction, { headers: this.getJwtHeader() })
+            .pipe(
+                map((response: Transaction) => response)
+            );
+    }
 }

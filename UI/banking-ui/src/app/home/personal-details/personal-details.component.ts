@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AuthService } from '../../shared/service/auth/auth.service';
 import { User } from '../../shared/service/user/user';
+import { Transaction } from '../../shared/service/user/transaction';
 
 @Component({
     selector: 'app-personal-details',
@@ -10,6 +11,7 @@ import { User } from '../../shared/service/user/user';
 export class PersonalDetailsComponent implements OnInit {
 
     @Input() user: User;
+    displayTransfer = false;
 
     constructor(public authService: AuthService) {
     }
@@ -17,4 +19,11 @@ export class PersonalDetailsComponent implements OnInit {
     ngOnInit() {
     }
 
+    transfer(): void {
+        this.displayTransfer = true;
+    }
+
+    onTransferred(transaction: Transaction): void {
+        this.displayTransfer = false;
+    }
 }

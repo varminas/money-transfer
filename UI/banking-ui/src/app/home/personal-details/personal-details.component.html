@@ -25,3 +25,6 @@
 <ng-container *ngFor="let account of user.accounts">
 	<app-account [account]="account"></app-account>
 </ng-container>
+
+<button type="button" class="btn btn-primary" (click)="transfer()">Transfer money</button>
+<app-transfer *ngIf="displayTransfer" (transferred)="onTransferred($event)"></app-transfer>
