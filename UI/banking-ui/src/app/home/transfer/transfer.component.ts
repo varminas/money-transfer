@@ -51,7 +51,6 @@ export class TransferComponent implements OnInit, OnDestroy {
                     this.transferred.emit(transaction);
                 },
                 error => {
-                    console.log('some error', error);
                     this.errorMessage = error.error.message || 'Error occurred while making transfer';
                 }
             );
