@@ -10,6 +10,7 @@ export class AuthService {
 
     private _authenticated = false;
     private _jwtToken: string;
+    private _userId: string;
 
     constructor(private http: HttpClient) {
     }
@@ -25,9 +26,11 @@ export class AuthService {
             if (response['jwt']) {
                 this._authenticated = true;
                 this._jwtToken = response['jwt'];
+                this._userId = response['userId'];
             } else {
                 this._authenticated = false;
                 this._jwtToken = undefined;
+                this._userId = undefined;
             }
             return callback && callback();
         });
@@ -37,8 +40,11 @@ export class AuthService {
         return this._authenticated;
     }
 
-    // TODO remove
-    get jwtToken(): string {
+    get userId(): string {
+        return this._userId;
+    }
+
+    get token(): string {
         return this._jwtToken;
     }
 

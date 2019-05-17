@@ -1,23 +1,31 @@
-import { Component } from '@angular/core';
-import { AuthService } from '../shared/auth.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { UserService } from '../shared/service/user/user.service';
+import { User } from '../shared/service/user/user';
+import { AuthService } from '../shared/service/auth/auth.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-home',
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.scss']
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit, OnDestroy {
+    private destroyed = new Subject<void>();
 
-    greeting = {};
+    user: User;
 
-    constructor(private authService: AuthService) {
+    constructor(private authService: AuthService, private userService: UserService) {
     }
 
-    authenticated() {
-        return this.authService.authenticated;
+    ngOnInit(): void {
+        this.userService.getUser()
+            .pipe(takeUntil(this.destroyed))
+            .subscribe(user => this.user);
     }
 
-    get jwtToken(): string {
-        return this.authService.jwtToken;
+    ngOnDestroy(): void {
+        this.destroyed.next();
+        this.destroyed.complete();
     }
 }
