@@ -1,7 +1,7 @@
 package lt.arminai.moneyTransfer.controller;
 
 import lombok.NoArgsConstructor;
-import lt.arminai.moneyTransfer.dto.AuthDto;
+import lt.arminai.moneyTransfer.converter.AuthConverter;
 import lt.arminai.moneyTransfer.model.AuthPojo;
 import lt.arminai.moneyTransfer.service.AuthService;
 import org.slf4j.Logger;
@@ -40,7 +40,7 @@ public class AuthResource {
             String name = securityContext.getCallerPrincipal().getName();
             AuthPojo authPojo = authService.createJwt(name);
 
-            return Response.ok(new AuthDto(authPojo.getJwt(), authPojo.getUserId())).build();
+            return Response.ok(AuthConverter.toDto(authPojo)).build();
         }
 
         return Response.status(Response.Status.UNAUTHORIZED).build();

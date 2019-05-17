@@ -1,13 +1,7 @@
 package lt.arminai.moneyTransfer.converter;
 
-import lt.arminai.moneyTransfer.dto.AccountDto;
-import lt.arminai.moneyTransfer.dto.CurrencyDto;
-import lt.arminai.moneyTransfer.dto.GenderDto;
-import lt.arminai.moneyTransfer.dto.UserDto;
-import lt.arminai.moneyTransfer.model.Account;
-import lt.arminai.moneyTransfer.model.Currency;
-import lt.arminai.moneyTransfer.model.Gender;
-import lt.arminai.moneyTransfer.model.User;
+import lt.arminai.moneyTransfer.dto.*;
+import lt.arminai.moneyTransfer.model.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -62,5 +56,13 @@ public final class TestData {
                 .createdAt(LocalDateTime.of(2019, 2, 2, 3, 4, 5))
                 .updatedAt(LocalDateTime.of(2019, 2, 2, 3, 4, 5))
                 .build();
+    }
+
+    public static AuthPojo getAuthPojo() {
+        return new AuthPojo("jwtabc", "123456");
+    }
+
+    public static AuthDto getAuthDto() {
+        return new AuthDto("jwtabc", "123456");
     }
 }
