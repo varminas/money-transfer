@@ -1,0 +1,21 @@
+<form [formGroup]="form" (ngSubmit)="create()">
+	<div class="form-group">
+		<label for="accountFrom">Account from: *</label>
+		<input type="text" class="form-control" id="accountFrom" name="accountFrom" formControlName="accountFrom"/>
+		<app-error-message [control]="accountFromControl" name="Account from"></app-error-message>
+	</div>
+	<div class="form-group">
+		<label for="accountTo">Account to: *</label>
+		<input type="text" class="form-control" id="accountTo" name="accountTo" formControlName="accountTo"/>
+		<app-error-message [control]="accountToControl" name="Account to"></app-error-message>
+	</div>
+	<div class="form-group">
+		<label for="amount">Amount: *</label>
+		<input type="text" class="form-control" id="amount" name="amount" formControlName="amount"/>
+		<app-error-message [control]="amountControl" name="Amount"></app-error-message>
+	</div>
+	<button type="submit" class="btn btn-primary">Create</button>
+</form>
+
+
+<div class="error-message" *ngIf="errorMessage">{{errorMessage}}</div>

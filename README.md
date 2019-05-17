@@ -25,10 +25,9 @@ Database is configured as in-memory
 
 JDBC URL: __jdbc:h2:tcp://localhost/mem:banking__
 
-Sample SQL:
+### Data
 
-`
-  create table account(id int primary key, number varchar(255), balance int);
-  insert into account values (1, 'abc', 4);
-  select * from account;
-`
+| No. | Username | Password |   |   |
+|---|---|---|---|---|
+| 1  | ob123 | ob123pwd |   |   |
+| 2  | js456 | js456pwd |   |   |

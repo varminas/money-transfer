@@ -1,0 +1,35 @@
+<h1>Personal details</h1>
+
+<div class="row">
+	<div class="col-2">User ID</div>
+	<div class="col-2">{{user.username}}</div>
+</div>
+<div class="row">
+	<div class="col-2">First name</div>
+	<div class="col-2">{{user.firstName}}</div>
+</div>
+<div class="row">
+	<div class="col-2">Last name</div>
+	<div class="col-2">{{user.lastName}}</div>
+</div>
+<div class="row">
+	<div class="col-2">Phone number</div>
+	<div class="col-2">{{user.phone}}</div>
+</div>
+<div class="row">
+	<div class="col-2">Email</div>
+	<div class="col-2">{{user.email}}</div>
+</div>
+
+<h2>Accounts</h2>
+<ng-container *ngFor="let account of user.accounts">
+	<app-account [account]="account"></app-account>
+</ng-container>
+
+<button type="button" class="btn btn-primary" (click)="transfer()">Transfer money</button>
+<app-transfer *ngIf="displayTransfer" (transferred)="onTransferred($event)"></app-transfer>
+
+<div class="recent-transaction" *ngIf="transaction">
+	<div>Recent transaction</div>
+	<app-transaction [transaction]="transaction"></app-transaction>
+</div>
