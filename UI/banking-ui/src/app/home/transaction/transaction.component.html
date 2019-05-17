@@ -1,0 +1,20 @@
+<div class="row">
+	<div class="col-2">Transaction ID</div>
+	<div class="col-3">{{transaction.id}}</div>
+</div>
+<div class="row">
+	<div class="col-2">Amount</div>
+	<div class="col-3">{{transaction.amount}}</div>
+</div>
+<div class="row">
+	<div class="col-2">Date</div>
+	<div class="col-3">{{transaction.createdAt | date}}</div>
+</div>
+<div class="row">
+	<div class="col-2">From account</div>
+	<div class="col-3">{{transaction.fromAccountNumber}}</div>
+</div>
+<div class="row">
+	<div class="col-2">To account</div>
+	<div class="col-3">{{transaction.toAccountNumber}}</div>
+</div>
