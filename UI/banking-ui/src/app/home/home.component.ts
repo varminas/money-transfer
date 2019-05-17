@@ -19,9 +19,11 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.userService.getUser()
-            .pipe(takeUntil(this.destroyed))
-            .subscribe(user => this.user);
+        if (this.authService.authenticated) {
+            this.userService.getUser()
+                .pipe(takeUntil(this.destroyed))
+                .subscribe(user => this.user = user);
+        }
     }
 
     ngOnDestroy(): void {

@@ -1,0 +1,26 @@
+<div class="row">
+	<div class="col-2">Account number</div>
+	<div class="col-2">{{account.number}}</div>
+</div>
+<div class="row">
+	<div class="col-2">Balance</div>
+	<div class="col-2">{{account.balance}}</div>
+</div>
+<div class="row">
+	<div class="col-2">Currency</div>
+	<div class="col-2">{{account.currency}}</div>
+</div>
+<div class="row">
+	<div class="col-2">Currency</div>
+	<div class="col-2">{{account.currency}}</div>
+</div>
+
+<button (click)="getTransactions()" class="btn btn-secondary">Transactions</button>
+
+<div class="no-message" *ngIf="noTransactionsMessage">{{noTransactionsMessage}}</div>
+
+<div class="transactions">
+<ng-container *ngFor="let transaction of transactions">
+	<app-transaction [transaction]="transaction"></app-transaction>
+</ng-container>
+</div>

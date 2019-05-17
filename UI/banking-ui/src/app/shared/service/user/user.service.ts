@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { User } from './user';
 import { map } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
+import { Transaction } from './transaction';
 
 @Injectable({
     providedIn: 'root'
@@ -17,18 +18,22 @@ export class UserService {
     getUser(): Observable<User> {
         const URL = this.BASE_URL + 'users/' + this.auth.userId;
 
-        const jwt = this.auth.token;
-        const headers = new HttpHeaders(jwt ? jwt : {});
-
-        return this.http.get(URL, { headers: headers })
+        return this.http.get(URL, { headers: this.getJwtHeader() })
             .pipe(
-                map((response: any) => {
-                    return {
-                        username: response.username,
-                        firstName: response.firstName,
-                        lastName: response.lastName,
-                    };
-                })
+                map((user: User) => user)
             );
+    }
+
+    getTransactions(accountId: string): Observable<Transaction[]> {
+        const URL = this.BASE_URL + 'users/' + this.auth.userId + '/accounts/' + accountId + '/transactions';
+        return this.http.get(URL, { headers: this.getJwtHeader() })
+            .pipe(
+                map((transactions: any) => transactions.transactions)
+            );
+    }
+
+    private getJwtHeader(): HttpHeaders {
+        const jwt = this.auth.token;
+        return new HttpHeaders(jwt ? jwt : {});
     }
 }
