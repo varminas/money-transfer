@@ -15,6 +15,8 @@ export class TransferComponent implements OnInit, OnDestroy {
 
     form: FormGroup;
 
+    errorMessage: string = undefined;
+
     @Output() transferred = new EventEmitter<Transaction>();
 
     constructor(private userService: UserService) {
@@ -24,7 +26,7 @@ export class TransferComponent implements OnInit, OnDestroy {
         this.form = new FormGroup({
             'accountFrom': new FormControl('', [Validators.required, Validators.minLength(5)]),
             'accountTo': new FormControl('', [Validators.required, Validators.minLength(5)]),
-            'amount': new FormControl('', [Validators.required]),
+            'amount': new FormControl('', [Validators.required])
         });
     }
 
@@ -44,9 +46,15 @@ export class TransferComponent implements OnInit, OnDestroy {
 
         this.userService.transfer(accountFrom, accountTo, parseInt(amount, 10))
             .pipe(takeUntil(this.destroyed))
-            .subscribe(transaction => {
-               this.transferred.emit(transaction);
-            });
+            .subscribe(
+                transaction => {
+                    this.transferred.emit(transaction);
+                },
+                error => {
+                    console.log('some error', error);
+                    this.errorMessage = error.error.message || 'Error occurred while making transfer';
+                }
+            );
     }
 
     get accountFromControl(): AbstractControl {
