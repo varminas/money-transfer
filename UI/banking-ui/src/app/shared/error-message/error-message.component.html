@@ -1,0 +1,6 @@
+<div class="input-error" *ngIf="control.invalid && (control.dirty || control.touched)">
+	<span *ngIf="control.errors.required">{{ name }} is required field.</span>
+	<span *ngIf="control.errors.minlength">
+		{{ name }} should have at least {{ control.errors.minlength.requiredLength}} symbols.
+	</span>
+</div>
