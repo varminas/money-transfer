@@ -11,7 +11,7 @@ import javax.ws.rs.core.Response;
 
 public final class HttpClientHelper {
 
-    public final Response processRequest(String url, String method, String payload,
+    public static final Response processRequest(String url, String method, String payload,
                                           String authHeader) {
         Client client = ClientBuilder.newClient();
 
