@@ -170,6 +170,5 @@
     <modules>
         <module>resources</module>
         <module>backendServices</module>
-        <!--<module>frontend</module>-->
     </modules>
 </project>

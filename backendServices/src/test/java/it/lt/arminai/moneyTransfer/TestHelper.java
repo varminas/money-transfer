@@ -1,4 +1,4 @@
-package lt.arminai.moneyTransfer.it;
+package it.lt.arminai.moneyTransfer;
 
 import lt.arminai.moneyTransfer.dto.*;
 
@@ -12,6 +12,7 @@ import static org.junit.Assert.assertThat;
 
 public final class TestHelper {
     public static final String USER_ID1 = "bed6109f-ef8a-47ec-8fa4-e57c71415a10";
+    public static final String USER_NAME1 = "ob123";
 
     public static final String ACCOUNT_ID1 = "bed6109f-ef8a-47ec-8fa4-e57c71415a12";
     public static final String ACCOUNT_ID2 = "bed6109f-ef8a-47ec-8fa4-e57c71415a13";
@@ -22,7 +23,7 @@ public final class TestHelper {
     public static UserDto getUserDto1() {
         return UserDto.builder()
                 .id(USER_ID1)
-                .username("ob123")
+                .username(USER_NAME1)
                 .firstName("Olivier")
                 .lastName("Bruce")
                 .gender(GenderDto.M)
