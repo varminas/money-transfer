@@ -1,20 +1,18 @@
 package it.lt.arminai.moneyTransfer;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import it.lt.arminai.moneyTransfer.util.HttpClientHelper;
 import it.lt.arminai.moneyTransfer.util.JwtVerifier;
-import lt.arminai.moneyTransfer.dto.AccountDto;
-import lt.arminai.moneyTransfer.dto.AccountDtoList;
-import lt.arminai.moneyTransfer.dto.TransactionDtoList;
-import lt.arminai.moneyTransfer.dto.UserDto;
+import lt.arminai.moneyTransfer.dto.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
+import java.math.BigDecimal;
 
 import static it.lt.arminai.moneyTransfer.TestHelper.*;
 import static org.hamcrest.CoreMatchers.is;
@@ -116,10 +114,24 @@ public class UserResourceIT {
 
     @Test
     public void getTransactionsForAccount_unauthorized() {
-        Response response = HttpClientHelper.processRequest(URL + "/accounts/" + ACCOUNT_ID1 + "/transactions", "GET"
-                , null, null, null);
+        Response response = HttpClientHelper.processRequest(URL + "/accounts/" + ACCOUNT_ID1 + "/transactions", "GET",
+                null, null, null);
 
         assertThat("HTTP GET failed", response.getStatus(), is(Response.Status.UNAUTHORIZED.getStatusCode()));
+    }
+
+    @Test
+    @Ignore
+    public void transferBetweenOwnAccounts() throws JsonProcessingException {
+        TransactionDto transactionDto = TransactionDto.builder()
+                .fromAccountNumber("1000001")
+                .toAccountNumber("1000002")
+                .amount(BigDecimal.TEN)
+                .build();
+        Response response = HttpClientHelper.processRequest(URL + "/accounts/" + ACCOUNT_ID1 + "/transactions",
+                "POST", httpClientHelper.objectToString(transactionDto), null, cookie);
+
+        assertThat("HTTP GET failed", response.getStatus(), is(Response.Status.CREATED.getStatusCode()));
     }
     
     private static Response authenticate() {
