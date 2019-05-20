@@ -38,22 +38,22 @@ import java.util.StringTokenizer;
 import static org.junit.Assert.*;
 
 public class JwtVerifier {
-
+    
     // The algorithm used to sign the JWT.
     private static final String JWT_ALGORITHM = "SHA256withRSA";
-
+    
     // The issuer of the JWT. This must match the issuer that the liberty server expects,
     // defined in server.xml.
     private static final String JWT_ISSUER = System.getProperty("jwt.issuer", "http://openliberty.io");
-
+    
     // The hostname we'll use in our tests. The hostname of the backend service.
     private static final String libertyHostname = System.getProperty("liberty.backend.service.hostname");
-
+    
     // The SSL port we'll use in our tests. The ssl port of the backend service.
     private static final String libertySslPort = System.getProperty("liberty.backend.service.ssl.port");
-
+    
     private static final String keystorePath = "/keystore.jceks";
-
+    
     /**
      * Validate that the response contains an authorization header, and that the JWT inside can be
      * decoded using the public key of the server.
@@ -71,22 +71,22 @@ public class JwtVerifier {
             Assert.fail("Exception validating JWT signature: " + t.toString());
         }
     }
-
+    
     public void validateJwt(String authHeader, PublicKey publicKey) {
         assertNotNull("Authorization header was not present in response", authHeader);
         assertTrue("Authorization header does not contain a bearer", authHeader.startsWith("Bearer "));
-
+        
         StringTokenizer st = new StringTokenizer(authHeader.substring(7), ".");
         assertTrue("JWT does not contain three parts", st.countTokens() == 3);
-
+        
         String jwtHeaderEnc = st.nextToken();
         String jwtClaimsEnc = st.nextToken();
         String jwtSigEnc = st.nextToken();
-
+        
         try {
             // Decode the signature we got from the server
             byte[] jwtExpectedSig = Base64Utility.decode(jwtSigEnc, true);
-
+            
             // Validate the signature.
             Signature sig = Signature.getInstance(JWT_ALGORITHM);
             sig.initVerify(publicKey);
@@ -100,7 +100,7 @@ public class JwtVerifier {
             Assert.fail("Exception validating JWT signature: " + t.toString());
         }
     }
-
+    
     /**
      * Make a microprofile-compliant JWT with the correct secret key.
      *
@@ -111,7 +111,7 @@ public class JwtVerifier {
         groups.add("USER");
         return createJwt(username, groups);
     }
-
+    
     /**
      * Make a microprofile-compliant JWT with the correct secret key.
      *
@@ -122,74 +122,76 @@ public class JwtVerifier {
         groups.add("admin");
         return createJwt(username, groups);
     }
-
+    
     public String createJwt(String username, Set<String> groups) throws GeneralSecurityException, IOException {
         // Create and Base64 encode the header portion of the JWT
         JsonObject headerObj = Json.createObjectBuilder()
-                        .add("alg", "RS256")  // Algorithm used
-                        .add("typ", "JWT")    // Type of token
-                        .build();
+            .add("alg", "RS256")  // Algorithm used
+            .add("typ", "JWT")    // Type of token
+            .build();
         String headerEnc = Base64Utility.encode(headerObj.toString().getBytes(), true);
-
+        
         // Create and Base64 encode the claims portion of the JWT
         JsonObject claimsObj = Json.createObjectBuilder()
-                        .add("exp", (System.currentTimeMillis() / 1000) + 300)  // Expire time
-                        .add("iat", (System.currentTimeMillis() / 1000))        // Issued time
-                        .add("aud", "simpleapp")                                // Audience
-                        .add("jti", Long.toHexString(System.nanoTime()))        // Unique value
-                        .add("sub", username)                                   // Subject
-                        .add("upn", username)                                   // Subject again
-                        .add("iss", JWT_ISSUER)                                 // Issuer
-                        .add("groups", getGroupArray(groups))                   // Group list
-                        .build();
-
+            .add("exp", (System.currentTimeMillis() / 1000) + 30000)  // Expire time
+            .add("iat", (System.currentTimeMillis() / 1000))        // Issued time
+            .add("aud", "simpleapp")                                // Audience
+            .add("jti", Long.toHexString(System.nanoTime()))        // Unique value
+            .add("sub", username)                                   // Subject
+            .add("upn", username)                                   // Subject again
+            .add("iss", JWT_ISSUER)                                 // Issuer
+            .add("groups", getGroupArray(groups))                   // Group list
+            .build();
+        
         String claimsEnc = Base64Utility.encode(claimsObj.toString().getBytes(), true);
         String headerClaimsEnc = headerEnc + "." + claimsEnc;
-
+        
         // Open the keystore that the server will use to validate the JWT
         KeyStore ks = KeyStore.getInstance("JCEKS");
         InputStream ksStream = this.getClass().getResourceAsStream(JwtVerifier.keystorePath);
         assertNotNull("Keystore resource not found!", this.getClass().getResource(JwtVerifier.keystorePath));
-
+        
         char[] password = new String("secret").toCharArray();
         ks.load(ksStream, password);
-
+        
         // Get the private key to use to sign the JWT.  Normally we would not do this but
         // we are pretending to be the backend service here.
         KeyStore.ProtectionParameter keyPassword = new KeyStore.PasswordProtection(password);
         KeyStore.PrivateKeyEntry privateKeyEntry =
-                (KeyStore.PrivateKeyEntry) ks.getEntry("default", keyPassword);
+            (KeyStore.PrivateKeyEntry) ks.getEntry("default", keyPassword);
         PrivateKey privateKey = privateKeyEntry.getPrivateKey();
-
+        
         // Sign the JWT
         Signature sig = Signature.getInstance(JWT_ALGORITHM);
         sig.initSign(privateKey);
         sig.update(headerClaimsEnc.getBytes());
         String sigEnc = Base64Utility.encode(sig.sign(), true);
-
+        
         // Lets just check......
         String jwtEnc = headerClaimsEnc + "." + sigEnc;
         java.security.cert.Certificate cert = ks.getCertificate("default");
         PublicKey publicKey = cert.getPublicKey();
         validateJwt("Bearer " + jwtEnc, publicKey);
-
+        
         // Return the complete JWT (header, claims, signature).
         return jwtEnc;
     }
-
-    /** Create a groups array to put in the JWT. */
+    
+    /**
+     * Create a groups array to put in the JWT.
+     */
     private static JsonArray getGroupArray(Set<String> groups) {
         JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
-
+        
         if (groups != null) {
             for (String group : groups) {
                 arrayBuilder.add(group);
             }
         }
-
+        
         return arrayBuilder.build();
     }
-
+    
     /**
      * Get the public key that is used to verify the JWT from the backend service. We assume the key is
      * an RSA key.
@@ -200,9 +202,9 @@ public class JwtVerifier {
         String url = "https://" + libertyHostname + ":" + libertySslPort + "/jwt/ibm/api/jwtUserBuilder/jwk";
         Response response = processRequest(url, "GET", null, null);
         assertEquals("HTTP response code should have been " + Status.OK.getStatusCode() + ".",
-                     Status.OK.getStatusCode(),
-                     response.getStatus());
-
+            Status.OK.getStatusCode(),
+            response.getStatus());
+        
         // Liberty returns the keys in an array.  We'll grab the first one (there
         // should only be one).
         JsonObject jwkResponse = toJsonObj(response.readEntity(String.class));
@@ -211,14 +213,14 @@ public class JwtVerifier {
         BigInteger modulus = new BigInteger(1, Base64Utility.decode(jwk.getString("n"), true));
         BigInteger publicExponent = new BigInteger(1, Base64Utility.decode(jwk.getString("e"), true));
         return KeyFactory.getInstance("RSA")
-                         .generatePublic(new RSAPublicKeySpec(modulus, publicExponent));
+            .generatePublic(new RSAPublicKeySpec(modulus, publicExponent));
     }
-
+    
     public static JsonObject toJsonObj(String json) {
         JsonReader jReader = Json.createReader(new StringReader(json));
         return jReader.readObject();
     }
-
+    
     private Response processRequest(String url, String method, String payload, String authHeader) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(url);

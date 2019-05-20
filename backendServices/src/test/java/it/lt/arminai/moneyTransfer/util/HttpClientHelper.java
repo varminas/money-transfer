@@ -5,6 +5,7 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -12,7 +13,7 @@ import javax.ws.rs.core.Response;
 public final class HttpClientHelper {
 
     public static final Response processRequest(String url, String method, String payload,
-                                          String authHeader) {
+                                                String authHeader, Cookie cookie) {
         Client client = ClientBuilder.newClient();
 
         WebTarget target = client.target(url);
@@ -21,6 +22,11 @@ public final class HttpClientHelper {
         if (authHeader != null) {
             builder.header(HttpHeaders.AUTHORIZATION, authHeader);
         }
+        
+        if (cookie != null) {
+            builder.cookie(cookie);
+        }
+        
         return (payload != null)
                 ? builder.build(method, Entity.json(payload)).invoke()
                 : builder.build(method).invoke();
