@@ -1,13 +1,12 @@
 package it.lt.arminai.moneyTransfer;
 
+import it.lt.arminai.moneyTransfer.util.HttpClientHelper;
+import it.lt.arminai.moneyTransfer.util.JwtVerifier;
 import lt.arminai.moneyTransfer.dto.AccountDto;
 import lt.arminai.moneyTransfer.dto.AccountDtoList;
 import lt.arminai.moneyTransfer.dto.TransactionDtoList;
 import lt.arminai.moneyTransfer.dto.UserDto;
-import it.lt.arminai.moneyTransfer.util.HttpClientHelper;
-import it.lt.arminai.moneyTransfer.util.JwtVerifier;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -19,15 +18,10 @@ import static org.junit.Assert.assertThat;
 
 @Ignore
 public class UserResourceIT {
-    private static String URL;
+    private static final String URL = "https://localhost:" +
+        System.getProperty("liberty.test.ssl.port") + "/banking/users/" + USER_ID1;
 
     private String authHeader;
-
-    @BeforeClass
-    public static void init() {
-        String port = System.getProperty("liberty.test.ssl.port");
-        URL = "https://localhost:" + port + "/banking/users/" + USER_ID1;
-    }
 
     @Before
     public void setup() throws Exception {
