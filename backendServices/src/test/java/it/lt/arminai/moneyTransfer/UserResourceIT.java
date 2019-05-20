@@ -27,15 +27,11 @@ public class UserResourceIT {
     
     private String authHeader;
     private static Cookie cookie;
-    
-    private static final ObjectMapper objectMapper = new ObjectMapper();
-    
-    static {
-        objectMapper.registerModule(new JavaTimeModule());
-    }
+    private static HttpClientHelper httpClientHelper;
     
     @BeforeClass
     public static void init() {
+        httpClientHelper = new HttpClientHelper();
         Response authResponse = authenticate();
     
         getCookieFromResponse(authResponse);
@@ -48,15 +44,21 @@ public class UserResourceIT {
     }
     
     @Test
-    public void getUserAndAccounts() throws IOException {
-
+    public void getUserAndAccounts_authorized() throws IOException {
         Response response = HttpClientHelper.processRequest(URL, "GET", null, null, cookie);
         
         assertThat("HTTP GET failed", response.getStatus(), is(Response.Status.OK.getStatusCode()));
         
-        UserDto actual = getEntity(response.readEntity(String.class), UserDto.class);
+        UserDto actual = httpClientHelper.getEntity(response.readEntity(String.class), UserDto.class);
         UserDto expected = getUserDto1();
         assertUser(actual, expected);
+    }
+
+    @Test
+    public void getUserAndAccounts_unauthorized() {
+        Response response = HttpClientHelper.processRequest(URL, "GET", null, null, null);
+
+        assertThat("HTTP GET failed", response.getStatus(), is(Response.Status.UNAUTHORIZED.getStatusCode()));
     }
     
     @Test
@@ -65,10 +67,17 @@ public class UserResourceIT {
         
         assertThat("HTTP GET failed", response.getStatus(), is(Response.Status.OK.getStatusCode()));
         
-        AccountDto actual = getEntity(response.readEntity(String.class), AccountDto.class);
+        AccountDto actual = httpClientHelper.getEntity(response.readEntity(String.class), AccountDto.class);
         AccountDto expected = getAccountDto1();
         assertAccount(actual, expected);
         
+    }
+
+    @Test
+    public void getUserAccountById_unauthorized() {
+        Response response = HttpClientHelper.processRequest(URL + "/accounts/" + ACCOUNT_ID1, "GET", null, null, null);
+
+        assertThat("HTTP GET failed", response.getStatus(), is(Response.Status.UNAUTHORIZED.getStatusCode()));
     }
     
     @Test
@@ -77,10 +86,17 @@ public class UserResourceIT {
         
         assertThat("HTTP GET failed", response.getStatus(), is(Response.Status.OK.getStatusCode()));
         
-        AccountDtoList accounts = getEntity(response.readEntity(String.class), AccountDtoList.class);
+        AccountDtoList accounts = httpClientHelper.getEntity(response.readEntity(String.class), AccountDtoList.class);
         assertThat(accounts.getAccounts().size(), is(2));
         assertAccount(accounts.getAccounts().get(0), getAccountDto1());
         assertAccount(accounts.getAccounts().get(1), getAccountDto2());
+    }
+
+    @Test
+    public void getAllUserAccounts_unauthorized() {
+        Response response = HttpClientHelper.processRequest(URL + "/accounts", "GET", null, null, null);
+
+        assertThat("HTTP GET failed", response.getStatus(), is(Response.Status.UNAUTHORIZED.getStatusCode()));
     }
     
     @Test
@@ -90,12 +106,20 @@ public class UserResourceIT {
         
         assertThat("HTTP GET failed", response.getStatus(), is(Response.Status.OK.getStatusCode()));
         
-        TransactionDtoList transactions = getEntity(response.readEntity(String.class), TransactionDtoList.class);
+        TransactionDtoList transactions = httpClientHelper.getEntity(response.readEntity(String.class), TransactionDtoList.class);
 
         assertThat(transactions.getTransactions().size(), is(2));
 
         assertTransaction(transactions.getTransactions().get(0), getTransactionDto1());
         assertTransaction(transactions.getTransactions().get(1), getTransactionDto2());
+    }
+
+    @Test
+    public void getTransactionsForAccount_unauthorized() {
+        Response response = HttpClientHelper.processRequest(URL + "/accounts/" + ACCOUNT_ID1 + "/transactions", "GET"
+                , null, null, null);
+
+        assertThat("HTTP GET failed", response.getStatus(), is(Response.Status.UNAUTHORIZED.getStatusCode()));
     }
     
     private static Response authenticate() {
@@ -114,9 +138,5 @@ public class UserResourceIT {
         String value = nameValue.replace(cookieName + "=", "");
         
         cookie = new Cookie(cookieName, value);
-    }
-    
-    private <T> T getEntity(String responseAsString, Class<T> clazz) throws IOException {
-        return objectMapper.readValue(responseAsString, clazz);
     }
 }
