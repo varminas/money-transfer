@@ -1,6 +1,10 @@
 package it.lt.arminai.moneyTransfer;
 
-import lt.arminai.moneyTransfer.dto.*;
+import lt.arminai.moneyTransfer.dto.AccountDto;
+import lt.arminai.moneyTransfer.dto.CurrencyDto;
+import lt.arminai.moneyTransfer.dto.GenderDto;
+import lt.arminai.moneyTransfer.dto.TransactionDto;
+import lt.arminai.moneyTransfer.dto.UserDto;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

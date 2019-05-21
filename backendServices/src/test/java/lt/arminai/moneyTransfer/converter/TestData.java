@@ -1,7 +1,15 @@
 package lt.arminai.moneyTransfer.converter;
 
-import lt.arminai.moneyTransfer.dto.*;
-import lt.arminai.moneyTransfer.model.*;
+import lt.arminai.moneyTransfer.dto.AccountDto;
+import lt.arminai.moneyTransfer.dto.AuthDto;
+import lt.arminai.moneyTransfer.dto.CurrencyDto;
+import lt.arminai.moneyTransfer.dto.GenderDto;
+import lt.arminai.moneyTransfer.dto.UserDto;
+import lt.arminai.moneyTransfer.model.Account;
+import lt.arminai.moneyTransfer.model.AuthPojo;
+import lt.arminai.moneyTransfer.model.Currency;
+import lt.arminai.moneyTransfer.model.Gender;
+import lt.arminai.moneyTransfer.model.User;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

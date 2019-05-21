@@ -1,7 +1,11 @@
 package lt.arminai.moneyTransfer.controller;
 
 import lombok.NoArgsConstructor;
-import lt.arminai.moneyTransfer.converter.*;
+import lt.arminai.moneyTransfer.converter.AccountConverter;
+import lt.arminai.moneyTransfer.converter.AccountListConverter;
+import lt.arminai.moneyTransfer.converter.TransactionConverter;
+import lt.arminai.moneyTransfer.converter.TransactionListConverter;
+import lt.arminai.moneyTransfer.converter.UserConverter;
 import lt.arminai.moneyTransfer.dto.TransactionDto;
 import lt.arminai.moneyTransfer.model.Account;
 import lt.arminai.moneyTransfer.model.BasePersistentEntity;
@@ -13,7 +17,11 @@ import lt.arminai.moneyTransfer.service.UserService;
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.ws.rs.*;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URI;
