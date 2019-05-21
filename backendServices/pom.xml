@@ -13,7 +13,7 @@
 
     <properties>
         <warfile.name>money-transfer</warfile.name>
-        <server.name>backendServer</server.name>
+        <server.name>defaultServer</server.name>
     </properties>
 
     <dependencies>
@@ -226,17 +226,6 @@
             <plugin>
                 <groupId>net.wasdev.wlp.maven.plugins</groupId>
                 <artifactId>liberty-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>install-apps</id>
-                        <configuration>
-                            <appsDirectory>apps</appsDirectory>
-                            <stripVersion>true</stripVersion>
-                            <installAppPackages>project</installAppPackages>
-                            <looseApplication>true</looseApplication>
-                        </configuration>
-                    </execution>
-                </executions>
                 <configuration>
                     <serverName>${server.name}</serverName>
                     <appArchive>${project.build.directory}/${warfile.name}.war</appArchive>
@@ -250,6 +239,49 @@
                         <jwt.issuer>${jwt.issuer}</jwt.issuer>
                     </bootstrapProperties>
                 </configuration>
+                <executions>
+                    <!-- Install the OL runtime -->
+                    <execution>
+                        <id>install-liberty</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>install-server</goal>
+                        </goals>
+                    </execution>
+                    <!-- Create defaultServer -->
+                    <execution>
+                        <id>create-server</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>create-server</goal>
+                        </goals>
+                    </execution>
+                    <!-- Install the app into the apps/ directory of defaultServer -->
+                    <execution>
+                        <id>install-apps</id>
+                        <configuration>
+                            <appsDirectory>apps</appsDirectory>
+                            <stripVersion>true</stripVersion>
+                            <installAppPackages>project</installAppPackages>
+                            <looseApplication>true</looseApplication>
+                        </configuration>
+                    </execution>
+                    <!-- Test start and stop server -->
+                    <execution>
+                        <id>start-server</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>test-start-server</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>stop-server</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>test-stop-server</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
             <!-- Integration test execution setup. -->

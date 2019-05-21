@@ -1,0 +1,15 @@
+version: '2'
+services:
+  moneyTransfer:
+    image: "money-transfer:latest"
+    container_name: money-transfer
+    restart: "no"
+    privileged: true
+    network_mode: "host"
+    volumes:
+      - /home/a1v/Personal/money-transfer/backendServices/target/liberty/wlp/usr/servers:/servers
+      - /home/a1v/Personal/money-transfer/backendServices/target/liberty/wlp/usr/shared:/shared
+    ports:
+      - 5050:5050
+      - 5051:5051
+    user: ${CURRENT_UID}
