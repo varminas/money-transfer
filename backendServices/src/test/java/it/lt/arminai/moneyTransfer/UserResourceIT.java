@@ -1,6 +1,5 @@
 package it.lt.arminai.moneyTransfer;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import it.lt.arminai.moneyTransfer.util.HttpClientHelper;
 import it.lt.arminai.moneyTransfer.util.JwtVerifier;
 import lt.arminai.moneyTransfer.dto.AccountDto;
@@ -19,7 +18,6 @@ import java.math.BigDecimal;
 
 import static it.lt.arminai.moneyTransfer.TestHelper.*;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 public class UserResourceIT {
