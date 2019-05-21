@@ -75,15 +75,19 @@ public final class TestHelper {
                 .createdAt(LocalDateTime.parse("2019-01-04T20:04:35.069"))
                 .build();
     }
-
-
-
-    public static void assertTransaction(TransactionDto actual, TransactionDto expected) {
-        assertThat(actual.getId(), is(expected.getId()));
-        assertThat(actual.getAmount(), is(expected.getAmount()));
+    
+    public static void assertTransaction(TransactionDto actual, TransactionDto expected, boolean matchDynamicFields) {
+        if (matchDynamicFields) {
+            assertThat(actual.getId(), is(expected.getId()));
+            assertThat(actual.getAmount(), is(expected.getAmount()));
+        } else {
+            assertNotNull(actual.getId());
+            assertNotNull(actual.getCreatedAt());
+        }
+        
         assertThat(actual.getFromAccountNumber(), is(expected.getFromAccountNumber()));
         assertThat(actual.getToAccountNumber(), is(expected.getToAccountNumber()));
-        assertThat(actual.getCreatedAt(), is(expected.getCreatedAt()));
+        assertThat(actual.getAmount(), is(expected.getAmount()));
     }
 
     public static void assertUser(UserDto actual, UserDto expected) {

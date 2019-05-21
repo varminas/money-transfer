@@ -3,10 +3,13 @@ package it.lt.arminai.moneyTransfer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import it.lt.arminai.moneyTransfer.util.HttpClientHelper;
 import it.lt.arminai.moneyTransfer.util.JwtVerifier;
-import lt.arminai.moneyTransfer.dto.*;
+import lt.arminai.moneyTransfer.dto.AccountDto;
+import lt.arminai.moneyTransfer.dto.AccountDtoList;
+import lt.arminai.moneyTransfer.dto.TransactionDto;
+import lt.arminai.moneyTransfer.dto.TransactionDtoList;
+import lt.arminai.moneyTransfer.dto.UserDto;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.ws.rs.core.Cookie;
@@ -16,6 +19,7 @@ import java.math.BigDecimal;
 
 import static it.lt.arminai.moneyTransfer.TestHelper.*;
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 public class UserResourceIT {
@@ -99,8 +103,7 @@ public class UserResourceIT {
     
     @Test
     public void getTransactionsForAccount() throws IOException {
-        Response response = HttpClientHelper.processRequest(URL + "/accounts/" + ACCOUNT_ID1 + "/transactions", "GET"
-            , null, null, cookie);
+        Response response = HttpClientHelper.processRequest(URL + "/accounts/" + ACCOUNT_ID1 + "/transactions", "GET", null, null, cookie);
         
         assertThat("HTTP GET failed", response.getStatus(), is(Response.Status.OK.getStatusCode()));
         
@@ -108,8 +111,8 @@ public class UserResourceIT {
 
         assertThat(transactions.getTransactions().size(), is(2));
 
-        assertTransaction(transactions.getTransactions().get(0), getTransactionDto1());
-        assertTransaction(transactions.getTransactions().get(1), getTransactionDto2());
+        assertTransaction(transactions.getTransactions().get(0), getTransactionDto1(), true);
+        assertTransaction(transactions.getTransactions().get(1), getTransactionDto2(), true);
     }
 
     @Test
@@ -121,17 +124,60 @@ public class UserResourceIT {
     }
 
     @Test
-    @Ignore
-    public void transferBetweenOwnAccounts() throws JsonProcessingException {
-        TransactionDto transactionDto = TransactionDto.builder()
-                .fromAccountNumber("1000001")
-                .toAccountNumber("1000002")
-                .amount(BigDecimal.TEN)
-                .build();
-        Response response = HttpClientHelper.processRequest(URL + "/accounts/" + ACCOUNT_ID1 + "/transactions",
-                "POST", httpClientHelper.objectToString(transactionDto), null, cookie);
+    public void transferBetweenOwnAccounts() throws Exception {
+        // 1. Get initial balance of accounts
+        // 1.1 Account 'FROM'
+        Response response = HttpClientHelper.processRequest(URL + "/accounts/" + ACCOUNT_ID1, "GET", null, null, cookie);
+        
+        assertThat(response.getStatus(), is(Response.Status.OK.getStatusCode()));
+        AccountDto actual = httpClientHelper.getEntity(response.readEntity(String.class), AccountDto.class);
+        assertThat(actual.getBalance(), is(BigDecimal.valueOf(4000)));
+    
+        // 1.2 Account 'FROM'
+        response = HttpClientHelper.processRequest(URL + "/accounts/" + ACCOUNT_ID2, "GET", null, null, cookie);
+    
+        assertThat(response.getStatus(), is(Response.Status.OK.getStatusCode()));
+        actual = httpClientHelper.getEntity(response.readEntity(String.class), AccountDto.class);
+        assertThat(actual.getBalance(), is(BigDecimal.valueOf(2000)));
+        
+        // 2. Make a money transfer
+        response = HttpClientHelper.processRequest(URL + "/accounts/transactions",
+                "POST", httpClientHelper.objectToString(getTransactionDto()), null, cookie);
 
-        assertThat("HTTP GET failed", response.getStatus(), is(Response.Status.CREATED.getStatusCode()));
+        assertThat(response.getStatus(), is(Response.Status.CREATED.getStatusCode()));
+        TransactionDto newTransaction = httpClientHelper.getEntity(response.readEntity(String.class), TransactionDto.class);
+        assertTransaction(newTransaction, getTransactionDto(), false);
+        
+        // 3. Get balance of accounts after transfer
+        // 3.1 Account 'FROM'
+        response = HttpClientHelper.processRequest(URL + "/accounts/" + ACCOUNT_ID1, "GET", null, null, cookie);
+    
+        assertThat(response.getStatus(), is(Response.Status.OK.getStatusCode()));
+        actual = httpClientHelper.getEntity(response.readEntity(String.class), AccountDto.class);
+        assertThat(actual.getBalance(), is(BigDecimal.valueOf(3990)));
+    
+        // 3.2 Account 'FROM'
+        response = HttpClientHelper.processRequest(URL + "/accounts/" + ACCOUNT_ID2, "GET", null, null, cookie);
+    
+        assertThat(response.getStatus(), is(Response.Status.OK.getStatusCode()));
+        actual = httpClientHelper.getEntity(response.readEntity(String.class), AccountDto.class);
+        assertThat(actual.getBalance(), is(BigDecimal.valueOf(2010)));
+    }
+    
+    @Test
+    public void transferBetweenOwnAccounts_unauthorized() throws Exception {
+        Response response = HttpClientHelper.processRequest(URL + "/accounts/transactions",
+            "POST", httpClientHelper.objectToString(getTransactionDto()), null, null);
+        
+        assertThat(response.getStatus(), is(Response.Status.UNAUTHORIZED.getStatusCode()));
+    }
+    
+    private TransactionDto getTransactionDto() {
+        return TransactionDto.builder()
+                    .fromAccountNumber("1000001")
+                    .toAccountNumber("1000002")
+                    .amount(BigDecimal.TEN)
+                    .build();
     }
     
     private static Response authenticate() {
