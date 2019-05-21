@@ -1,19 +1,18 @@
 package lt.arminai.moneyTransfer.converter;
 
 import lt.arminai.moneyTransfer.dto.AccountDto;
-import lt.arminai.moneyTransfer.dto.CurrencyDto;
 import lt.arminai.moneyTransfer.dto.UserDto;
 import lt.arminai.moneyTransfer.model.Account;
-import lt.arminai.moneyTransfer.model.Currency;
 import lt.arminai.moneyTransfer.model.User;
 import org.junit.Test;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
-import java.util.List;
 
 import static java.util.Collections.emptyList;
-import static lt.arminai.moneyTransfer.converter.TestData.*;
+import static lt.arminai.moneyTransfer.converter.TestData.getAccount;
+import static lt.arminai.moneyTransfer.converter.TestData.getAccountDto;
+import static lt.arminai.moneyTransfer.converter.TestData.getUser;
+import static lt.arminai.moneyTransfer.converter.TestData.getUserDto;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;

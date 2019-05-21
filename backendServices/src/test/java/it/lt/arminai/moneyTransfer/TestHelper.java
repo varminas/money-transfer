@@ -1,6 +1,10 @@
-package lt.arminai.moneyTransfer.it;
+package it.lt.arminai.moneyTransfer;
 
-import lt.arminai.moneyTransfer.dto.*;
+import lt.arminai.moneyTransfer.dto.AccountDto;
+import lt.arminai.moneyTransfer.dto.CurrencyDto;
+import lt.arminai.moneyTransfer.dto.GenderDto;
+import lt.arminai.moneyTransfer.dto.TransactionDto;
+import lt.arminai.moneyTransfer.dto.UserDto;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -12,6 +16,7 @@ import static org.junit.Assert.assertThat;
 
 public final class TestHelper {
     public static final String USER_ID1 = "bed6109f-ef8a-47ec-8fa4-e57c71415a10";
+    public static final String USER_NAME1 = "ob123";
 
     public static final String ACCOUNT_ID1 = "bed6109f-ef8a-47ec-8fa4-e57c71415a12";
     public static final String ACCOUNT_ID2 = "bed6109f-ef8a-47ec-8fa4-e57c71415a13";
@@ -22,7 +27,7 @@ public final class TestHelper {
     public static UserDto getUserDto1() {
         return UserDto.builder()
                 .id(USER_ID1)
-                .username("ob123")
+                .username(USER_NAME1)
                 .firstName("Olivier")
                 .lastName("Bruce")
                 .gender(GenderDto.M)
@@ -74,15 +79,19 @@ public final class TestHelper {
                 .createdAt(LocalDateTime.parse("2019-01-04T20:04:35.069"))
                 .build();
     }
-
-
-
-    public static void assertTransaction(TransactionDto actual, TransactionDto expected) {
-        assertThat(actual.getId(), is(expected.getId()));
-        assertThat(actual.getAmount(), is(expected.getAmount()));
+    
+    public static void assertTransaction(TransactionDto actual, TransactionDto expected, boolean matchDynamicFields) {
+        if (matchDynamicFields) {
+            assertThat(actual.getId(), is(expected.getId()));
+            assertThat(actual.getAmount(), is(expected.getAmount()));
+        } else {
+            assertNotNull(actual.getId());
+            assertNotNull(actual.getCreatedAt());
+        }
+        
         assertThat(actual.getFromAccountNumber(), is(expected.getFromAccountNumber()));
         assertThat(actual.getToAccountNumber(), is(expected.getToAccountNumber()));
-        assertThat(actual.getCreatedAt(), is(expected.getCreatedAt()));
+        assertThat(actual.getAmount(), is(expected.getAmount()));
     }
 
     public static void assertUser(UserDto actual, UserDto expected) {
