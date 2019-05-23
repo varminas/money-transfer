@@ -131,7 +131,7 @@ public class JwtVerifier {
      */
     public String createAdminJwt(String username) throws GeneralSecurityException, IOException {
         Set<String> groups = new HashSet<String>();
-        groups.add("admin");
+        groups.add("ADMIN");
         return createJwt(username, groups);
     }
     
