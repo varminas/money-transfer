@@ -17,7 +17,7 @@ import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.math.BigDecimal;
 
-import static it.lt.arminai.moneyTransfer.TestHelper.*;
+import static it.lt.arminai.moneyTransfer.util.TestHelper.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
