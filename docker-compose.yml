@@ -8,7 +8,6 @@ services:
     network_mode: "host"
     volumes:
       - /home/a1v/Personal/money-transfer/backendServices/target/liberty/wlp/usr/servers:/servers
-      - /home/a1v/Personal/money-transfer/backendServices/target/liberty/wlp/usr/shared:/shared
     ports:
       - 5050:5050
       - 5051:5051
