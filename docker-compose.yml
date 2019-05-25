@@ -1,8 +1,11 @@
-version: '2'
+version: '3.7'
 services:
   moneyTransfer:
     image: "money-transfer:latest"
-    container_name: money-transfer
+    build:
+      context: backendServices
+      dockerfile: Dockerfile
+#    container_name: money-transfer
     restart: "no"
     privileged: true
     network_mode: "host"
@@ -11,3 +14,12 @@ services:
     ports:
       - 5050:5050
       - 5051:5051
+
+  moneyTransferUi:
+    image: "money-transfer-ui:latest"
+    build:
+      context: UI/banking-ui
+      dockerfile: Dockerfile
+#    container_name: money-transfer-ui
+    ports:
+      - 4200:4200
