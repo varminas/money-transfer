@@ -1,4 +1,4 @@
-package it.lt.arminai.moneyTransfer;
+package it.lt.arminai.moneyTransfer.util;
 
 import lt.arminai.moneyTransfer.dto.AccountDto;
 import lt.arminai.moneyTransfer.dto.CurrencyDto;

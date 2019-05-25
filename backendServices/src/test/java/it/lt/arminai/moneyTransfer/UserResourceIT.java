@@ -9,6 +9,7 @@ import lt.arminai.moneyTransfer.dto.TransactionDtoList;
 import lt.arminai.moneyTransfer.dto.UserDto;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.ws.rs.core.Cookie;
@@ -16,7 +17,7 @@ import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.math.BigDecimal;
 
-import static it.lt.arminai.moneyTransfer.TestHelper.*;
+import static it.lt.arminai.moneyTransfer.util.TestHelper.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -41,6 +42,18 @@ public class UserResourceIT {
     @Before
     public void setup() throws Exception {
         authHeader = "Bearer " + new JwtVerifier().createAdminJwt(USER_NAME1);
+    }
+
+    @Test
+    @Ignore(value = "Authorization with provided JWT does not work, 401 instead 200")
+    public void getUserAndAccounts_withJwt_authorized() throws IOException {
+        Response response = HttpClientHelper.processRequest(URL, "GET", null, authHeader, null);
+
+        assertThat(response.getStatus(), is(Response.Status.OK.getStatusCode()));
+
+        UserDto actual = httpClientHelper.getEntity(response.readEntity(String.class), UserDto.class);
+        UserDto expected = getUserDto1();
+        assertUser(actual, expected);
     }
     
     @Test
