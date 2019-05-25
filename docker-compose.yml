@@ -7,8 +7,7 @@ services:
     privileged: true
     network_mode: "host"
     volumes:
-      - /home/a1v/Personal/money-transfer/backendServices/target/liberty/wlp/usr/servers:/servers
+      - ./backendServices/target/liberty/wlp/usr/servers:/servers
     ports:
       - 5050:5050
       - 5051:5051
-    user: ${CURRENT_UID}
