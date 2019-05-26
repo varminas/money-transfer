@@ -23,3 +23,5 @@ services:
 #    container_name: money-transfer-ui
     ports:
       - 4200:4200
+    links:
+      - moneyTransfer
