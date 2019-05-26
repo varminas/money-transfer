@@ -49,6 +49,10 @@ Follow docker containers logs:
 
     docker-compose logs -f -- tail 100
     
+Cleanup containers (delete volumes):
+
+    docker-compose down -v
+    
 ## Issues
 
 * There is a problem by running backend docker container on __MacOS__ [Issue 48](https://github.com/OpenLiberty/guide-docker/issues/48)
