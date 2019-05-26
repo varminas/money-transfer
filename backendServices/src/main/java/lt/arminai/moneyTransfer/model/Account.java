@@ -37,6 +37,7 @@ public class Account extends BasePersistentEntity {
     @Enumerated(value = EnumType.STRING)
     private Currency currency;
 
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;

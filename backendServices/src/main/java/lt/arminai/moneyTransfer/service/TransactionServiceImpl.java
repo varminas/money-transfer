@@ -37,7 +37,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public List<Transaction> getTransactionsByAccount(String userId, String accountId) {
-        Optional<User> user = userService.getUser("bed6109f-ef8a-47ec-8fa4-e57c71415a10");
+        Optional<User> user = userService.getUser(userId);
 
         if (!user.isPresent()) {
             throw new EntityNotFoundException(String.format("User not found '%s')", userId));
