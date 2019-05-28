@@ -5,12 +5,6 @@ services:
     build:
       context: backendServices
       dockerfile: Dockerfile
-#    container_name: money-transfer
-#    restart: "no"
-#    privileged: true
-#    network_mode: "host"
-#    volumes:
-#      - ./backendServices/target/liberty/wlp/usr/servers:/servers
     ports:
       - 5050:5050
       - 5051:5051
@@ -20,12 +14,7 @@ services:
     build:
       context: UI/banking-ui
       dockerfile: Dockerfile
-#    container_name: money-transfer-ui
     ports:
       - 4200:4200
     links:
       - moneytransfer
-
-#networks:
-#  moneyTransferBackend:
-#    external: true
