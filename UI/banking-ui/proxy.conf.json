@@ -1,6 +1,6 @@
 {
 	"/banking/*": {
-		"target": "https://moneyTransfer:5051",
+		"target": "https://moneytransfer:5051",
 		"secure": false,
 		"logLevel": "debug",
 		"changeOrigin": true

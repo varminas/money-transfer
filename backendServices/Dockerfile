@@ -2,9 +2,6 @@ FROM open-liberty
 
 USER 0
 
-#ENV LIBERTY_VERSION=19.0.0.4
-
-#USER root
 # Symlink servers directory for easier mounts.
 RUN ln -s /opt/ol/wlp/usr/servers /servers
 

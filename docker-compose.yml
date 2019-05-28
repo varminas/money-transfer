@@ -1,6 +1,6 @@
 version: '3.7'
 services:
-  moneyTransfer:
+  moneytransfer:
     image: "money-transfer:latest"
     build:
       context: backendServices
@@ -24,7 +24,7 @@ services:
     ports:
       - 4200:4200
     links:
-      - moneyTransfer
+      - moneytransfer
 
 #networks:
 #  moneyTransferBackend:
