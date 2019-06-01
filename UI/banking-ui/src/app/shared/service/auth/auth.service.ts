@@ -22,18 +22,20 @@ export class AuthService {
         } : {});
 
         const URL = this.BASE_URL + 'tokens';
-        this.http.get(URL, { headers: headers }).subscribe(response => {
-            if (response['jwt']) {
-                this._authenticated = true;
-                this._jwtToken = response['jwt'];
-                this._userId = response['userId'];
-            } else {
-                this._authenticated = false;
-                this._jwtToken = undefined;
-                this._userId = undefined;
-            }
-            return callback && callback();
-        });
+        this.http.get(URL, { headers: headers }).subscribe(
+            response => {
+                if (response['jwt']) {
+                    this._authenticated = true;
+                    this._jwtToken = response['jwt'];
+                    this._userId = response['userId'];
+                } else {
+                    this._authenticated = false;
+                    this._jwtToken = undefined;
+                    this._userId = undefined;
+                }
+                return callback && callback();
+            },
+            error => console.error('Error while requesting token', error));
     }
 
     get authenticated(): boolean {

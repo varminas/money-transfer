@@ -45,6 +45,10 @@ Application (Backend and UI) can be started within Docker containers.
 
     docker-compose up -d --build
     
+Open the UI in the browser by the following link:
+
+    http://localhost:80
+    
 Follow docker containers logs:
 
     docker-compose logs -f -- tail 100

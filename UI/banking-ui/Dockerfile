@@ -1,20 +1,29 @@
-FROM node:12.2.0
+# STEP 1 build static website
+FROM node:12.3.1-alpine as builder
 
-RUN mkdir -p /app
-
-# set working directory
 WORKDIR /app
-
-# add `/app/node_modules/.bin` to $PATH
-ENV PATH /app/node_modules/.bin:$PATH
 
 COPY package*.json /app/
 
-RUN npm ci
+RUN npm set progress=false && npm ci
+
 RUN npm install -g @angular/cli@7.3.9
 
+# Copy project files into the docker image
 COPY . /app/
 
-EXPOSE 4200
+RUN cd /app && npm run build --prod
 
-CMD ng serve --host 0.0.0.0 --proxy-config proxy.conf.json
+# STAGE 2: Setup ###
+FROM nginx:1.16.0-alpine
+
+## Remove default nginx website
+RUN rm -rf /usr/share/nginx/html/*
+
+## From 'builder' copy website to default nginx public folder
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+COPY ./nginx-custom.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
