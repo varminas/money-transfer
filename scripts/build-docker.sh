@@ -1,1 +1,1 @@
-docker build -t money-transfer .
+mvn clean install && docker-compose up -d --build

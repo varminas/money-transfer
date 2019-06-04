@@ -1,1 +1,1 @@
-docker rm money-transfer && docker rmi money-transfer
+docker-compose down -v
