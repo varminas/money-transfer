@@ -1,9 +1,11 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output, Input } from '@angular/core';
-import { Transaction } from '../../shared/service/user/transaction';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
-import { UserService } from '../../shared/service/user/user.service';
+
+import { map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+
+import { Transaction } from '../../shared/service/user/transaction';
+import { UserService } from '../../shared/service/user/user.service';
 
 @Component({
     selector: 'app-transfer',
@@ -17,6 +19,8 @@ export class TransferComponent implements OnInit, OnDestroy {
 
     errorMessage: string = undefined;
 
+    accountNumbers: number[];
+
     @Input() accountId: string;
 
     @Output() transferred = new EventEmitter<Transaction>();
@@ -25,11 +29,22 @@ export class TransferComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.form = new FormGroup({
-            'accountFrom': new FormControl('', [Validators.required, Validators.minLength(5)]),
-            'accountTo': new FormControl('', [Validators.required, Validators.minLength(5)]),
-            'amount': new FormControl('', [Validators.required])
-        });
+        this.userService.getUser()
+            .pipe(
+                takeUntil(this.destroyed),
+                map(user => user.accounts),
+                map(accounts => accounts.map(account => account.number))
+            )
+            .subscribe(accountNumbers => {
+                this.accountNumbers = accountNumbers;
+                const firstAccount = accountNumbers && accountNumbers.length > 0 ? accountNumbers[0] : '';
+
+                this.form = new FormGroup({
+                    'accountFrom': new FormControl(firstAccount, [Validators.required, Validators.minLength(5)]),
+                    'accountTo': new FormControl('', [Validators.required, Validators.minLength(5)]),
+                    'amount': new FormControl('', [Validators.required])
+                });
+            });
     }
 
     ngOnDestroy(): void {
